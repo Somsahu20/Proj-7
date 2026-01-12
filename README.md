@@ -1,4 +1,4 @@
-# SplitWise Clone - Expense Splitting Application
+# MoneyByte - Expense Splitting Application
 
 A full-stack expense splitting application built with FastAPI (backend) and React (frontend).
 
