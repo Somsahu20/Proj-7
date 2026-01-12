@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Bell, LogOut, Settings, User, Menu, X, Home, Users, Receipt, CreditCard, PiggyBank } from 'lucide-react';
+import { Bell, LogOut, Settings, User, Menu, X, Home, Users, Receipt, CreditCard, PiggyBank, UserPlus, Mail } from 'lucide-react';
 import { getInitials } from '@/lib/utils';
 import { useState } from 'react';
 
@@ -29,6 +29,8 @@ export function Header() {
   const navItems = [
     { href: '/dashboard', label: 'Dashboard', icon: Home },
     { href: '/groups', label: 'Groups', icon: Users },
+    { href: '/friends', label: 'Friends', icon: UserPlus },
+    { href: '/invitations', label: 'Invitations', icon: Mail },
     { href: '/expenses', label: 'Expenses', icon: Receipt },
     { href: '/payments', label: 'Payments', icon: CreditCard },
     { href: '/balances', label: 'Balances', icon: PiggyBank },

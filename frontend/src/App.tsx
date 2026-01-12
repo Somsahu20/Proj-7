@@ -16,6 +16,8 @@ import { PaymentFormPage } from '@/pages/PaymentFormPage';
 import { BalancesPage } from '@/pages/BalancesPage';
 import { NotificationsPage } from '@/pages/NotificationsPage';
 import { ProfilePage } from '@/pages/ProfilePage';
+import { InvitationsPage } from '@/pages/InvitationsPage';
+import { FriendsPage } from '@/pages/FriendsPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -70,6 +72,8 @@ function App() {
             <Route path="/payments" element={<PaymentsPage />} />
             <Route path="/payments/new" element={<PaymentFormPage />} />
             <Route path="/balances" element={<BalancesPage />} />
+            <Route path="/friends" element={<FriendsPage />} />
+            <Route path="/invitations" element={<InvitationsPage />} />
             <Route path="/notifications" element={<NotificationsPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/settings" element={<ProfilePage />} />
