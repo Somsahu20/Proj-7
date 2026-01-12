@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Notification Center - ExpenseSplit</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0f808a",
+                        "background-light": "#fafafa",
+                        "background-dark": "#1c1f22",
+                        "surface-dark": "#25292d",
+                        "surface-hover": "#2d3135",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display overflow-x-hidden">
+<div class="relative flex h-screen w-full overflow-hidden">
+<!-- Sidebar -->
+<aside class="flex w-64 flex-col border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-[#151719] shrink-0 h-full overflow-y-auto">
+<div class="flex flex-col gap-6 p-6">
+<!-- App Logo -->
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-teal-600 text-white shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-base font-bold leading-none tracking-tight">ExpenseSplit</h1>
+<p class="text-xs text-gray-500 dark:text-gray-400 font-medium mt-1">Wallet &amp; Groups</p>
+</div>
+</div>
+<!-- Navigation -->
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-surface-hover transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-surface-hover transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">credit_card</span>
+<span class="text-sm font-medium">Wallet</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-surface-hover transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">group</span>
+<span class="text-sm font-medium">Groups</span>
+</a>
+<!-- Active State -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary dark:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined font-variation-settings-fill">notifications</span>
+<span class="text-sm font-bold">Notifications</span>
+<span class="ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] text-white">4</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-surface-hover transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</nav>
+</div>
+<!-- Profile Footer -->
+<div class="mt-auto p-4 border-t border-gray-200 dark:border-gray-800">
+<div class="flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-surface-hover cursor-pointer transition-colors">
+<div class="h-9 w-9 rounded-full bg-gray-200 dark:bg-gray-700 bg-cover bg-center" data-alt="User profile picture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCOBEtjIgYSkG3trImM63dvaWITkArRsUJTrXbhwsUXmI5M3XpWVfowJIkv3Ogisip4NbX6iUEgTE3lRAdAMn5-U7Ry6cYnW60ZaDNv20tFda91bb54QexQqdWShWm1HUQjxY5vVwD76iovFd2XQNZDvugSvJcJz9QZzGHzI_4XhSaVHA3zMEOTz2U5cQ9efvHJzY2Yzyvga4uHz-4O8CIEka626SZ0eCNvLSEKmlJIzifX1dwmjBfLId91K0FsZS22ZVgB8pq4WZE')"></div>
+<div class="flex flex-col min-w-0">
+<p class="text-sm font-semibold truncate dark:text-gray-200">Alex Morgan</p>
+<p class="text-xs text-gray-500 truncate">alex@example.com</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col h-full overflow-hidden bg-background-light dark:bg-background-dark">
+<!-- Header Area -->
+<header class="flex-none px-8 pt-8 pb-4">
+<div class="flex flex-col max-w-4xl mx-auto w-full">
+<!-- Page Title & Main Action -->
+<div class="flex flex-wrap items-end justify-between gap-4 mb-6">
+<div>
+<h2 class="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">Notifications</h2>
+<p class="text-gray-500 dark:text-gray-400 mt-1">Stay updated on your group expenses and wallet activity.</p>
+</div>
+<button class="group flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-surface-hover transition-colors">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">playlist_add_check</span>
+<span>Mark all as read</span>
+</button>
+</div>
+<!-- Filter Chips -->
+<div class="flex flex-wrap gap-2">
+<button class="flex items-center gap-2 px-4 py-2 rounded-full bg-gray-900 dark:bg-white text-white dark:text-background-dark text-sm font-bold shadow-sm transition-transform active:scale-95">
+<span>All</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 rounded-full bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-surface-hover text-sm font-medium transition-colors">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span>Unread</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 rounded-full bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-surface-hover text-sm font-medium transition-colors">
+<span class="material-symbols-outlined text-[18px]">payments</span>
+<span>Payments</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 rounded-full bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-surface-hover text-sm font-medium transition-colors">
+<span class="material-symbols-outlined text-[18px]">group</span>
+<span>Groups</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 rounded-full bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-surface-hover text-sm font-medium transition-colors">
+<span class="material-symbols-outlined text-[18px] text-amber-500">warning</span>
+<span>Alerts</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Scrollable List Area -->
+<div class="flex-1 overflow-y-auto px-8 pb-12">
+<div class="flex flex-col max-w-4xl mx-auto w-full gap-8">
+<!-- TODAY SECTION -->
+<section class="flex flex-col gap-3">
+<div class="sticky top-0 z-10 bg-background-light dark:bg-background-dark py-2">
+<h3 class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Today</h3>
+</div>
+<!-- Invite Card -->
+<div class="group relative flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 rounded-xl bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-all duration-200 hover:border-primary/30">
+<div class="absolute top-4 right-4 h-2 w-2 rounded-full bg-primary"></div>
+<!-- Icon/Avatar -->
+<div class="relative shrink-0">
+<div class="w-12 h-12 rounded-full bg-cover bg-center border-2 border-white dark:border-gray-600 shadow-sm" data-alt="Sarah's profile picture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDIBgZGH3zmqIv0-fA1Tmg_ZiMsCSRT_fASSSXWnNycyKPfb7Xeu29vPm_VHWO_TGZWoCCVWmqtLxLjLo_a75CExC9ii4l8az3IajLQjQCq3BWvVlNUxKH81CAqHnZHkiGUjvcP1yt8Y0VvetYXocUHrMZip3kUutUrG-cotMJ5Fy6YyTt-EdLTruOcluFSQqrj_Ep8edkkeTzNKqwejR-cLzPXecOq6MClgk3Di3pgyrwgyAI-zolDXOjY2IRGPJ90K4Kb1-uyRUM')"></div>
+<div class="absolute -bottom-1 -right-1 flex items-center justify-center w-6 h-6 rounded-full bg-blue-500 text-white border-2 border-white dark:border-surface-dark">
+<span class="material-symbols-outlined text-[14px]">group_add</span>
+</div>
+</div>
+<!-- Content -->
+<div class="flex-1 min-w-0 pr-6">
+<div class="flex items-center gap-2 mb-0.5">
+<h4 class="text-sm font-bold text-gray-900 dark:text-white">Group Invite</h4>
+<span class="text-xs text-gray-500 dark:text-gray-400">• 2h ago</span>
+</div>
+<p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+<span class="font-semibold text-gray-900 dark:text-gray-200">Sarah</span> invited you to join <span class="font-semibold text-gray-900 dark:text-gray-200">"Ski Trip 2024"</span>. 
+                                </p>
+</div>
+<!-- Actions -->
+<div class="flex items-center gap-2 shrink-0 w-full sm:w-auto mt-2 sm:mt-0">
+<button class="flex-1 sm:flex-none items-center justify-center px-4 py-2 rounded-lg bg-primary text-white text-sm font-bold shadow-md shadow-primary/20 hover:bg-primary/90 transition-colors">
+                                    Accept
+                                </button>
+<button class="flex-1 sm:flex-none items-center justify-center px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                                    Decline
+                                </button>
+</div>
+</div>
+<!-- Expense Card -->
+<div class="group relative flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 rounded-xl bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-all duration-200">
+<div class="absolute top-4 right-4 h-2 w-2 rounded-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="shrink-0 flex items-center justify-center w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400">
+<span class="material-symbols-outlined">receipt_long</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center gap-2 mb-0.5">
+<h4 class="text-sm font-bold text-gray-900 dark:text-white">New Expense</h4>
+<span class="text-xs text-gray-500 dark:text-gray-400">• 5h ago</span>
+</div>
+<p class="text-sm text-gray-600 dark:text-gray-300">
+<span class="font-semibold text-gray-900 dark:text-gray-200">John</span> added <span class="font-semibold text-gray-900 dark:text-gray-200">$45.00</span> for "Dinner at Mario's".
+                                </p>
+</div>
+<div class="shrink-0 w-full sm:w-auto mt-2 sm:mt-0">
+<button class="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-medium hover:bg-gray-50 dark:hover:bg-surface-hover transition-colors">
+<span>View Details</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</section>
+<!-- YESTERDAY SECTION -->
+<section class="flex flex-col gap-3">
+<div class="sticky top-0 z-10 bg-background-light dark:bg-background-dark py-2">
+<h3 class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Yesterday</h3>
+</div>
+<!-- Auto-Payment Success Card -->
+<div class="group relative flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 rounded-xl bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden">
+<!-- Left accent strip for payment -->
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
+<div class="shrink-0 ml-2 flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 text-primary">
+<span class="material-symbols-outlined">check_circle</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center gap-2 mb-0.5">
+<h4 class="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                                        Auto-Payment Successful
+                                    </h4>
+<span class="text-xs text-gray-500 dark:text-gray-400">• Yesterday, 9:00 AM</span>
+</div>
+<p class="text-sm text-gray-600 dark:text-gray-300">
+                                    Your share of <span class="font-semibold text-gray-900 dark:text-gray-200">Rent</span> ($800.00) was successfully sent to <span class="font-semibold">Landlord</span>.
+                                </p>
+</div>
+<div class="shrink-0 w-full sm:w-auto mt-2 sm:mt-0">
+<button class="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-primary hover:bg-primary/10 dark:hover:bg-primary/20 transition-colors text-sm font-bold">
+<span class="material-symbols-outlined text-[18px]">receipt</span>
+<span>Receipt</span>
+</button>
+</div>
+</div>
+<!-- Low Balance Warning Card -->
+<div class="group relative flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 rounded-xl bg-red-50 dark:bg-[#2d1c1c] border border-red-100 dark:border-red-900/50 shadow-sm hover:shadow-md transition-all duration-200">
+<div class="shrink-0 flex items-center justify-center w-12 h-12 rounded-xl bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center gap-2 mb-0.5">
+<h4 class="text-sm font-bold text-red-700 dark:text-red-400">Low Balance Warning</h4>
+<span class="text-xs text-red-400 dark:text-red-500/70">• Yesterday, 4:30 PM</span>
+</div>
+<p class="text-sm text-red-600/80 dark:text-red-300/80">
+                                    Your wallet balance has dropped to <span class="font-bold">$20.00</span>. Please top up to cover upcoming auto-payments.
+                                </p>
+</div>
+<div class="shrink-0 w-full sm:w-auto mt-2 sm:mt-0">
+<button class="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-red-600 text-white text-sm font-bold hover:bg-red-700 shadow-sm shadow-red-500/20 transition-colors">
+<span class="material-symbols-outlined text-[18px]">add_card</span>
+<span>Top Up</span>
+</button>
+</div>
+</div>
+<!-- Group Chat/Info -->
+<div class="group relative flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 rounded-xl bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-all duration-200">
+<div class="shrink-0 flex items-center justify-center w-12 h-12 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400">
+<span class="material-symbols-outlined">forum</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center gap-2 mb-0.5">
+<h4 class="text-sm font-bold text-gray-900 dark:text-white">New Message</h4>
+<span class="text-xs text-gray-500 dark:text-gray-400">• Yesterday, 2:15 PM</span>
+</div>
+<p class="text-sm text-gray-600 dark:text-gray-300">
+<span class="font-semibold text-gray-900 dark:text-gray-200">Mike</span> posted in <span class="font-semibold">"Utilities"</span>: "Anyone knows why the electric bill is so high?"
+                                </p>
+</div>
+<div class="shrink-0 w-full sm:w-auto mt-2 sm:mt-0">
+<button class="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-medium hover:bg-gray-50 dark:hover:bg-surface-hover transition-colors">
+<span>Reply</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Older -->
+<div class="flex items-center justify-center pt-8">
+<button class="text-sm text-gray-500 dark:text-gray-400 font-medium hover:text-primary dark:hover:text-primary transition-colors flex items-center gap-2">
+<span>View older notifications</span>
+<span class="material-symbols-outlined text-[16px]">expand_more</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

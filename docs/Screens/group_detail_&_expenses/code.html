@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SplitIt - Trip to Japan</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0f808a",
+                        "background-light": "#fafafa",
+                        "background-dark": "#1c1f22",
+                        "surface-dark": "#25292e",
+                        "surface-darker": "#111416",
+                        "border-dark": "#2f353a"
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1c1f22; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2f353a; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3f464c; 
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display min-h-screen flex flex-col selection:bg-primary selection:text-white">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-border-dark bg-surface-darker px-4 lg:px-10 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-4 text-white">
+<div class="size-8 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl">pie_chart</span>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">SplitIt</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<nav class="hidden md:flex items-center gap-9">
+<a class="text-white/70 hover:text-white text-sm font-medium leading-normal transition-colors" href="#">Dashboard</a>
+<a class="text-white text-sm font-medium leading-normal" href="#">Activity</a>
+<a class="text-white/70 hover:text-white text-sm font-medium leading-normal transition-colors" href="#">Wallet</a>
+</nav>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-9 ring-2 ring-border-dark" data-alt="User profile avatar showing a smiling person" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBUUuR5WUcjMtTfeMptKV_AXiByVr6tpkW39OFz_UXZJubsgvfqu0QjVK3DfX1hVQtwky9jOXVcR_5Ckc4nL2rHs-t9zwt3jmA7tzJbUQgw9QDbnSnQJ-1O3LRMiplDA_3drbII2VKdRAq0bWnc8lfbU2AXaDEzfq7teR7ypIi3uA6O5n77BZh7QU_DuCAf2vmHl-kcxW5SBRijacSxX2rWxHmFNxk2ZL6QtivNd2qCsiPn9d74-y7tlNeLnLE7LGw3Jjcx8bWhyyk");'></div>
+</div>
+</header>
+<!-- Main Layout -->
+<div class="flex-1 w-full max-w-[1400px] mx-auto p-4 md:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Left Column: Main Group Content (8 cols) -->
+<main class="lg:col-span-8 flex flex-col gap-6">
+<!-- Hero Header Card -->
+<div class="relative overflow-hidden rounded-2xl bg-surface-dark border border-border-dark shadow-xl">
+<!-- Decorative background gradient -->
+<div class="absolute top-0 left-0 w-full h-32 bg-gradient-to-r from-primary/20 to-transparent"></div>
+<div class="relative p-6 md:p-8 flex flex-col md:flex-row gap-6 items-start md:items-end justify-between">
+<div class="flex gap-5 items-center md:items-start z-10">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-xl size-24 md:size-32 shadow-2xl ring-4 ring-background-dark" data-alt="Scenic view of Mount Fuji with cherry blossoms" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAm3OVfKhVUPcXL7lUYSGh_IynhKl5Es4hFG4G1vS8e_-hspcB5YRSjzferkkwG_zuFdSnQsHWjbEz2QKOjKb72izxLVRBTI6LDNyv5dTGfbz7CQWMv_m2xHPxp-rZJXnV2M8-M3AGzE0H9OUUn9x2Qrhh0JvB57ulJxHj2C_Nk5becLW1ZoWZU8sKWU7dyZXFaFRuPzAoN_lW1Xbo2NxPYa8kT48ra1bVBsqRwR3TN6_YNb8ZeJkqQ2o4rKrpiBICV-CRizIXaOFY");'></div>
+<div class="flex flex-col gap-1 pb-1">
+<div class="flex items-center gap-2 mb-1">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-primary/20 text-primary border border-primary/30">Active</span>
+<span class="text-xs text-white/50 font-medium">Created Oct 1, 2023</span>
+</div>
+<h1 class="text-3xl md:text-4xl font-bold text-white tracking-tight">Trip to Japan</h1>
+<p class="text-slate-400 text-sm md:text-base">Total Group Spend: <span class="text-white font-mono font-medium">$4,250.00</span></p>
+</div>
+</div>
+<!-- Auto Payment Toggle Box -->
+<div class="flex items-center gap-4 bg-background-dark/50 backdrop-blur-sm p-3 rounded-lg border border-border-dark z-10">
+<div class="size-10 rounded-full bg-surface-dark flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">credit_card_gear</span>
+</div>
+<div class="flex flex-col mr-2">
+<span class="text-white text-sm font-semibold">Auto-settle</span>
+<span class="text-xs text-emerald-400">Next: Oct 31</span>
+</div>
+<label class="relative flex h-[24px] w-[44px] cursor-pointer items-center rounded-full border-none bg-[#293738] p-0.5 has-[:checked]:justify-end has-[:checked]:bg-primary transition-colors duration-200">
+<div class="h-full w-[20px] rounded-full bg-white shadow-sm"></div>
+<input checked="" class="invisible absolute" type="checkbox"/>
+</label>
+</div>
+</div>
+</div>
+<!-- Navigation Tabs -->
+<div class="flex items-center border-b border-border-dark gap-8 px-2">
+<a class="group flex items-center gap-2 border-b-[3px] border-primary pb-3 pt-2" href="#">
+<span class="material-symbols-outlined text-primary text-[20px]">receipt_long</span>
+<span class="text-white text-sm font-bold tracking-[0.015em]">Expenses</span>
+</a>
+<a class="group flex items-center gap-2 border-b-[3px] border-transparent pb-3 pt-2 hover:border-border-dark transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-slate-200 text-[20px]">account_balance_wallet</span>
+<span class="text-slate-400 group-hover:text-slate-200 text-sm font-bold tracking-[0.015em] transition-colors">Balances</span>
+</a>
+<a class="group flex items-center gap-2 border-b-[3px] border-transparent pb-3 pt-2 hover:border-border-dark transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-slate-200 text-[20px]">settings</span>
+<span class="text-slate-400 group-hover:text-slate-200 text-sm font-bold tracking-[0.015em] transition-colors">Settings</span>
+</a>
+</div>
+<!-- Expenses Table -->
+<div class="relative min-h-[500px] flex flex-col">
+<!-- Sticky Header for list -->
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-lg font-bold text-white">October 2023</h3>
+<div class="flex gap-2">
+<button class="flex items-center justify-center size-8 rounded-lg bg-surface-dark border border-border-dark text-slate-400 hover:text-white hover:border-slate-500 transition-all">
+<span class="material-symbols-outlined text-[20px]">filter_list</span>
+</button>
+<button class="flex items-center justify-center size-8 rounded-lg bg-surface-dark border border-border-dark text-slate-400 hover:text-white hover:border-slate-500 transition-all">
+<span class="material-symbols-outlined text-[20px]">download</span>
+</button>
+</div>
+</div>
+<!-- Table Container -->
+<div class="w-full @container rounded-xl border border-border-dark bg-surface-dark overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-darker/50 text-slate-400 uppercase text-xs font-semibold tracking-wider border-b border-border-dark">
+<tr>
+<th class="p-4 w-[100px]">Date</th>
+<th class="p-4">Description</th>
+<th class="p-4 w-[140px] hidden sm:table-cell">Paid By</th>
+<th class="p-4 text-right">Amount</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-dark">
+<!-- Row 1 -->
+<tr class="group hover:bg-white/[0.02] transition-colors cursor-pointer">
+<td class="p-4 text-slate-400 text-sm font-mono">Oct 12</td>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-lg bg-[#293738] text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">restaurant</span>
+</div>
+<div>
+<div class="text-white font-medium">Sushi Dinner</div>
+<div class="text-xs text-slate-500 sm:hidden">Paid by Alice</div>
+</div>
+</div>
+</td>
+<td class="p-4 hidden sm:table-cell">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#293738] text-xs font-medium text-slate-200 border border-white/5">
+<div class="size-4 rounded-full bg-purple-500 text-[8px] flex items-center justify-center text-white">A</div>
+                                        Alice
+                                    </span>
+</td>
+<td class="p-4 text-right">
+<div class="text-white font-mono font-medium">$145.00</div>
+<div class="text-[10px] text-slate-500">You owe $48.33</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="group hover:bg-white/[0.02] transition-colors cursor-pointer">
+<td class="p-4 text-slate-400 text-sm font-mono">Oct 11</td>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-lg bg-[#293738] text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">train</span>
+</div>
+<div>
+<div class="text-white font-medium">Bullet Train Tickets</div>
+<div class="text-xs text-slate-500 sm:hidden">Paid by You</div>
+</div>
+</div>
+</td>
+<td class="p-4 hidden sm:table-cell">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/20 text-xs font-medium text-primary border border-primary/20">
+<div class="size-4 rounded-full bg-primary text-[8px] flex items-center justify-center text-white">Y</div>
+                                        You
+                                    </span>
+</td>
+<td class="p-4 text-right">
+<div class="text-white font-mono font-medium">$320.00</div>
+<div class="text-[10px] text-primary">Lent $213.00</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="group hover:bg-white/[0.02] transition-colors cursor-pointer">
+<td class="p-4 text-slate-400 text-sm font-mono">Oct 10</td>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-lg bg-[#293738] text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">home</span>
+</div>
+<div>
+<div class="text-white font-medium">Airbnb Deposit</div>
+<div class="text-xs text-slate-500 sm:hidden">Paid by Bob</div>
+</div>
+</div>
+</td>
+<td class="p-4 hidden sm:table-cell">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#293738] text-xs font-medium text-slate-200 border border-white/5">
+<div class="size-4 rounded-full bg-orange-500 text-[8px] flex items-center justify-center text-white">B</div>
+                                        Bob
+                                    </span>
+</td>
+<td class="p-4 text-right">
+<div class="text-white font-mono font-medium">$500.00</div>
+<div class="text-[10px] text-slate-500">You owe $166.00</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="group hover:bg-white/[0.02] transition-colors cursor-pointer">
+<td class="p-4 text-slate-400 text-sm font-mono">Oct 09</td>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-lg bg-[#293738] text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">local_cafe</span>
+</div>
+<div>
+<div class="text-white font-medium">Coffee &amp; Snacks</div>
+<div class="text-xs text-slate-500 sm:hidden">Paid by Alice</div>
+</div>
+</div>
+</td>
+<td class="p-4 hidden sm:table-cell">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#293738] text-xs font-medium text-slate-200 border border-white/5">
+<div class="size-4 rounded-full bg-purple-500 text-[8px] flex items-center justify-center text-white">A</div>
+                                        Alice
+                                    </span>
+</td>
+<td class="p-4 text-right">
+<div class="text-white font-mono font-medium">$24.50</div>
+<div class="text-[10px] text-slate-500">You owe $8.16</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- FAB Button -->
+<button class="fixed bottom-6 right-6 lg:absolute lg:bottom-4 lg:right-4 z-20 flex items-center gap-2 bg-primary hover:bg-primary/90 text-white pl-4 pr-5 py-3 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.3)] hover:shadow-[0_8px_35px_rgb(15,128,138,0.4)] transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0 active:shadow-none border border-white/10 group">
+<span class="material-symbols-outlined text-[24px] group-hover:rotate-90 transition-transform duration-300">add</span>
+<span class="font-bold text-base tracking-wide">Add Expense</span>
+</button>
+</div>
+</main>
+<!-- Right Column: Sidebar (4 cols) -->
+<aside class="lg:col-span-4 min-w-0">
+<div class="sticky top-24 flex flex-col gap-6">
+<!-- Members Card -->
+<div class="rounded-2xl bg-surface-dark border border-border-dark overflow-hidden">
+<div class="p-5 border-b border-border-dark flex justify-between items-center bg-surface-darker/30">
+<h3 class="text-white font-bold text-lg">Group Balances</h3>
+<button class="text-xs text-primary font-bold hover:text-primary/80">SETTLE UP</button>
+</div>
+<div class="flex flex-col p-2">
+<!-- Member Item: User (Positive) -->
+<div class="p-3 rounded-xl hover:bg-white/[0.03] transition-colors flex items-center justify-between group">
+<div class="flex items-center gap-3">
+<div class="relative">
+<div class="size-10 rounded-full bg-center bg-cover border-2 border-primary/30" data-alt="Profile picture of the current user" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBXDP3MiXj-_pORuGtWL7LgHkByIW3BbF99SaO-ooXb1Dqh_C_kAgNuGSfyGsvr7PC9dd-pYUKL0roWo7XtMcspQPo5WdtSeh33CFmRbSe6SBnpWnRU8HJ5sBeiLxzQ58x5yCac8tmmd2HNVMqvybGppokNNf3j_zDB1wnKZFSB_840tjehNS3o7KpI1be7Gug3QiCPHq-9PU1o5iWmZQzuAgo64LqM5N-AfTpQ-lNtVoQu_aChaADBzCKBkwZizhKRa5IP6e_Ds2Q");'></div>
+<div class="absolute -bottom-1 -right-1 bg-surface-dark rounded-full p-0.5">
+<div class="size-3 rounded-full bg-emerald-500 border border-surface-dark"></div>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="text-white font-medium text-sm">You</span>
+<span class="text-xs text-emerald-400 font-medium">Gets back</span>
+</div>
+</div>
+<div class="text-right">
+<span class="block text-emerald-400 font-mono font-bold">+$120.00</span>
+<!-- Mini visual bar graph for context -->
+<div class="h-1 w-16 bg-surface-darker rounded-full mt-1 overflow-hidden ml-auto">
+<div class="h-full bg-emerald-500 w-[70%] rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Member Item: Alice (Negative) -->
+<div class="p-3 rounded-xl hover:bg-white/[0.03] transition-colors flex items-center justify-between group">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-center bg-cover border-2 border-transparent group-hover:border-border-dark transition-colors" data-alt="Portrait of Alice smiling" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBHjHaGDxxawGuiVQvTBQLuYBmWTQCSnNUzWBVxU7D2Gtve5OK5_0QC1Ojx8XYNOXv-Zvzfkqfi7UCXD-0GtFdDcxLwps8uTbvFwpW8KyvYnL5AS8bS1gJkAXK3mV0W4ozsgz2Rg1JaDj44Hnc3cx7_Axkn7mDuHmhZ6v6Q-DahmT547zjNjexm1tkq3FYr7Ae1UBMJ5fYerQbVhPcuKC2zDbutUYmGX1C6gcml2ecGKkqA2v8D09Q9fKrNr7uL6putTpNPf5_Sd6Y");'></div>
+<div class="flex flex-col">
+<span class="text-white font-medium text-sm">Alice</span>
+<span class="text-xs text-slate-500 font-medium">Owes</span>
+</div>
+</div>
+<div class="text-right">
+<span class="block text-rose-400 font-mono font-bold">-$45.00</span>
+<div class="h-1 w-16 bg-surface-darker rounded-full mt-1 overflow-hidden ml-auto">
+<div class="h-full bg-rose-500 w-[30%] rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Member Item: Bob (Negative) -->
+<div class="p-3 rounded-xl hover:bg-white/[0.03] transition-colors flex items-center justify-between group">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-center bg-cover border-2 border-transparent group-hover:border-border-dark transition-colors" data-alt="Portrait of Bob looking serious" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuApHKVuxxtEWD1hf1yZqhk1EgyGk64VXTVOvShsZGqwF6DIcUKOKJVRMThWk5sfeMUnJ1T05aQU8c5jHBiLSp8sjeHgvyyY-xNgyCBojkLsYlFYdinmVJ2pmHjo_6PMMKFnAqf4KLNW-9MRW2AKd90zaTIb1PELhEIKBbmQofZpZ11BMTkci4WaD4RPFvKJXxF1l7n4HSQVFCUESlUn6Kdgfe2-Z0JsCwtRjQKwKpxg0D7qwxUa05uZFtpk6ZamJvmAt9z8dJua4fM");'></div>
+<div class="flex flex-col">
+<span class="text-white font-medium text-sm">Bob</span>
+<span class="text-xs text-slate-500 font-medium">Owes</span>
+</div>
+</div>
+<div class="text-right">
+<span class="block text-rose-400 font-mono font-bold">-$75.00</span>
+<div class="h-1 w-16 bg-surface-darker rounded-full mt-1 overflow-hidden ml-auto">
+<div class="h-full bg-rose-500 w-[55%] rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Stats / Insight -->
+<div class="rounded-2xl bg-gradient-to-br from-[#122e31] to-[#0d1618] border border-primary/20 p-5">
+<div class="flex items-start justify-between mb-2">
+<span class="material-symbols-outlined text-primary mb-2">insights</span>
+<span class="text-[10px] font-bold text-primary border border-primary/30 px-1.5 py-0.5 rounded">NEW</span>
+</div>
+<p class="text-sm text-slate-200 leading-relaxed">
+<span class="text-white font-bold">Top Spender:</span> Bob accounts for <span class="text-white font-bold">45%</span> of the group's expenses this week.
+                    </p>
+</div>
+<!-- Footer Links -->
+<div class="flex flex-wrap gap-4 text-xs text-slate-500 px-2">
+<a class="hover:text-slate-300" href="#">Export CSV</a>
+<span class="text-slate-700">•</span>
+<a class="hover:text-slate-300" href="#">Group Settings</a>
+<span class="text-slate-700">•</span>
+<a class="hover:text-slate-300" href="#">Archive</a>
+</div>
+</div>
+</aside>
+</div>
+</body></html>

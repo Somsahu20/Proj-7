@@ -1,0 +1,90 @@
+# ============ ENVIRONMENT FILES ============
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development
+
+# ============ PYTHON ============
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+venv/
+.venv/
+ENV/
+env/
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# ============ NODE / FRONTEND ============
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.npm
+.yarn-integrity
+frontend/dist/
+frontend/build/
+*.local
+
+# ============ IDE / EDITORS ============
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# ============ OS FILES ============
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ============ LOGS ============
+*.log
+logs/
+
+# ============ UPLOADS / USER DATA ============
+backend/uploads/
+uploads/
+
+# ============ DATABASE ============
+*.sqlite3
+*.db
+
+# ============ DOCKER ============
+docker-compose.override.yml
+
+# ============ MISC ============
+*.bak
+*.tmp
+*.temp
+.cache/

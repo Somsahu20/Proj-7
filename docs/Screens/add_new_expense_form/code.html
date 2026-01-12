@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Add New Expense - SplitWise Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0f808a",
+                        "background-light": "#fafafa",
+                        "background-dark": "#1c1f22",
+                        "surface-dark": "#25292e",
+                        "border-dark": "#2f3336",
+                        "text-secondary": "#9db6b8",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for dark theme consistency */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1c1f22; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2f3336; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3c4146; 
+        }
+        
+        .no-spinner::-webkit-inner-spin-button, 
+        .no-spinner::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#111418] dark:text-white font-display overflow-hidden h-screen flex">
+<!-- Side Navigation -->
+<div class="hidden lg:flex w-[280px] h-full flex-col bg-[#111718] border-r border-[#293738] shrink-0 z-20">
+<div class="flex h-full flex-col justify-between p-4">
+<div class="flex flex-col gap-4">
+<div class="flex gap-3 px-2 py-2">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border border-[#293738]" data-alt="Abstract geometric avatar for app logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBhHqwqLJO9xEA9UXj1P0C18S9paF3zivrx_4gVEDHgNVLg9zZ4qdHkhmuqsXV2qdokDfBtmnIS6eWhfxHCCsuv2k0uAyBuw9IdX3e0GYdWNl5gD8xGkA9mNzLsKYt6UaVoQKuUOpFQXbccd91RIFULLMS5_6RY_DzN0FO3Kw-jXpf0lwAaX7xXCmmfLqcJM60IYThO2Kfp4tYptvjGZAX5rz8J3FSz2VSRQWVXCPgS3sQc1lABlGWmR1PE52QMcLGJd-nPtxeqpiM");'></div>
+<div class="flex flex-col justify-center">
+<h1 class="text-white text-base font-bold leading-normal tracking-tight">SplitWise Pro</h1>
+<p class="text-text-secondary text-xs font-normal leading-normal">Premium Plan</p>
+</div>
+</div>
+<div class="h-px bg-[#293738] w-full my-1"></div>
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary hover:bg-[#1c2626] hover:text-white transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-[24px] group-hover:text-white transition-colors">dashboard</span>
+<p class="text-sm font-medium leading-normal">Dashboard</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary hover:bg-[#1c2626] hover:text-white transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-[24px] group-hover:text-white transition-colors">account_balance_wallet</span>
+<p class="text-sm font-medium leading-normal">Wallet</p>
+</div>
+<!-- Active State -->
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary cursor-pointer border border-primary/20">
+<span class="material-symbols-outlined text-[24px] fill-current">receipt_long</span>
+<p class="text-sm font-bold leading-normal">Expenses</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary hover:bg-[#1c2626] hover:text-white transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-[24px] group-hover:text-white transition-colors">donut_large</span>
+<p class="text-sm font-medium leading-normal">Reports</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary hover:bg-[#1c2626] hover:text-white transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-[24px] group-hover:text-white transition-colors">settings</span>
+<p class="text-sm font-medium leading-normal">Settings</p>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<div class="bg-[#1c2324] rounded-lg p-4 border border-[#293738]">
+<div class="flex justify-between items-center mb-2">
+<span class="text-xs font-semibold text-text-secondary uppercase tracking-wider">Monthly Limit</span>
+<span class="text-xs font-bold text-white">75%</span>
+</div>
+<div class="w-full bg-[#293738] rounded-full h-1.5">
+<div class="bg-primary h-1.5 rounded-full" style="width: 75%"></div>
+</div>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-secondary hover:text-white cursor-pointer">
+<span class="material-symbols-outlined">logout</span>
+<p class="text-sm font-medium">Log out</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col h-full relative overflow-hidden">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-[#2f3336] bg-[#1c1f22] px-6 lg:px-10 py-4 shrink-0 z-10">
+<div class="flex items-center gap-4">
+<div class="lg:hidden text-white cursor-pointer">
+<span class="material-symbols-outlined">menu</span>
+</div>
+<h2 class="text-white text-xl font-bold leading-tight tracking-tight hidden sm:block">New Expense</h2>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative hidden md:block w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-[20px]">search</span>
+<input class="w-full bg-[#25292e] border border-[#2f3336] rounded-lg h-10 pl-10 pr-4 text-sm text-white placeholder-text-secondary focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="Search expenses..."/>
+</div>
+<div class="flex items-center gap-4">
+<button class="relative text-text-secondary hover:text-white transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-0 right-0 size-2 bg-red-500 rounded-full border border-[#1c1f22]"></span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-9 border border-[#2f3336]" data-alt="User profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB6qqPNAQYNGOms1qzs4y2k5m7f9bb6EQKZ5rd_xolpMkP3YoQfs5PC0-tcaHzKpx3ixVmAHJX4FRW21x_uJW3Vn_h5AcfmDwdrs3Lm1xuK4wbWcHCHJFaUUuYK-6VwXx4NJjmcqRfP1lWR62r6Bzj9R0MzoMYzfOQjLPICC8zjsy6P_ct8--SgrCe6ZmU8yUX4Vuleoe5kOR__yod4_MsV2UHbthK_Oole6PjPugLkb3Rju4bfhSmelz_Gz_H_NOfdQDw9i_JYbEo");'></div>
+</div>
+</div>
+</header>
+<!-- Scrollable Content -->
+<main class="flex-1 overflow-y-auto bg-background-dark p-4 lg:p-8 flex justify-center">
+<div class="w-full max-w-[1200px] flex flex-col h-full">
+<!-- Page Header & Actions Mobile -->
+<div class="flex justify-between items-center mb-6 lg:mb-8">
+<div>
+<h1 class="text-3xl font-bold text-white tracking-tight mb-1">Add Expense</h1>
+<p class="text-text-secondary text-sm">Create a new record and notify your group.</p>
+</div>
+<button class="size-10 rounded-full bg-[#25292e] hover:bg-[#2f3336] text-white flex items-center justify-center border border-[#2f3336] transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<!-- Main Form Grid -->
+<form class="grid grid-cols-1 xl:grid-cols-12 gap-8 h-full pb-10">
+<!-- LEFT COLUMN: INPUTS -->
+<div class="xl:col-span-7 flex flex-col gap-8">
+<!-- Hero Amount Input -->
+<div class="flex flex-col gap-2">
+<label class="text-xs uppercase tracking-wider font-bold text-text-secondary">Amount</label>
+<div class="relative flex items-center">
+<span class="absolute left-0 text-4xl lg:text-6xl font-light text-[#4a5557] select-none">$</span>
+<input autofocus="" class="no-spinner w-full bg-transparent border-0 border-b-2 border-[#2f3336] px-8 py-2 text-5xl lg:text-7xl font-bold text-white placeholder-[#2f3336] focus:ring-0 focus:border-primary transition-colors caret-primary pl-10 lg:pl-16 h-24 lg:h-32" placeholder="0.00" type="number"/>
+</div>
+</div>
+<!-- Details Row -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<label class="flex flex-col gap-2">
+<span class="text-sm font-semibold text-white">Description</span>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary">edit_note</span>
+<input class="w-full bg-[#25292e] border border-[#2f3336] rounded-lg h-12 pl-10 pr-4 text-white placeholder-text-secondary focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="What is this for?" type="text"/>
+</div>
+</label>
+<label class="flex flex-col gap-2">
+<span class="text-sm font-semibold text-white">Date</span>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary">calendar_today</span>
+<input class="w-full bg-[#25292e] border border-[#2f3336] rounded-lg h-12 pl-10 pr-4 text-white placeholder-text-secondary focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all [color-scheme:dark]" type="date" value="2023-10-27"/>
+</div>
+</label>
+</div>
+<!-- Category Selector -->
+<div class="flex flex-col gap-3">
+<span class="text-sm font-semibold text-white">Category</span>
+<div class="flex flex-wrap gap-4">
+<button class="group flex flex-col items-center gap-2" type="button">
+<div class="size-14 rounded-full bg-[#25292e] border border-[#2f3336] flex items-center justify-center group-hover:border-primary group-hover:text-primary transition-all text-text-secondary">
+<span class="material-symbols-outlined text-[24px]">restaurant</span>
+</div>
+<span class="text-xs text-text-secondary group-hover:text-white">Food</span>
+</button>
+<button class="group flex flex-col items-center gap-2" type="button">
+<div class="size-14 rounded-full bg-primary text-white flex items-center justify-center shadow-[0_0_15px_rgba(15,128,138,0.4)] transform scale-105 transition-all">
+<span class="material-symbols-outlined text-[24px]">directions_car</span>
+</div>
+<span class="text-xs text-white font-medium">Transport</span>
+</button>
+<button class="group flex flex-col items-center gap-2" type="button">
+<div class="size-14 rounded-full bg-[#25292e] border border-[#2f3336] flex items-center justify-center group-hover:border-primary group-hover:text-primary transition-all text-text-secondary">
+<span class="material-symbols-outlined text-[24px]">shopping_bag</span>
+</div>
+<span class="text-xs text-text-secondary group-hover:text-white">Shopping</span>
+</button>
+<button class="group flex flex-col items-center gap-2" type="button">
+<div class="size-14 rounded-full bg-[#25292e] border border-[#2f3336] flex items-center justify-center group-hover:border-primary group-hover:text-primary transition-all text-text-secondary">
+<span class="material-symbols-outlined text-[24px]">flight</span>
+</div>
+<span class="text-xs text-text-secondary group-hover:text-white">Travel</span>
+</button>
+<button class="group flex flex-col items-center gap-2" type="button">
+<div class="size-14 rounded-full bg-[#25292e] border border-[#2f3336] flex items-center justify-center group-hover:border-primary group-hover:text-primary transition-all text-text-secondary">
+<span class="material-symbols-outlined text-[24px]">home</span>
+</div>
+<span class="text-xs text-text-secondary group-hover:text-white">Utilities</span>
+</button>
+<button class="group flex flex-col items-center gap-2" type="button">
+<div class="size-14 rounded-full bg-[#25292e] border border-[#2f3336] flex items-center justify-center group-hover:border-primary group-hover:text-primary transition-all text-text-secondary">
+<span class="material-symbols-outlined text-[24px]">add</span>
+</div>
+<span class="text-xs text-text-secondary group-hover:text-white">More</span>
+</button>
+</div>
+</div>
+<!-- Upload Zone -->
+<div class="flex flex-col gap-2">
+<span class="text-sm font-semibold text-white">Receipt</span>
+<div class="w-full border-2 border-dashed border-[#2f3336] rounded-xl p-8 flex flex-col items-center justify-center text-center hover:bg-[#25292e]/50 hover:border-primary/50 transition-colors cursor-pointer group">
+<div class="bg-[#25292e] rounded-full p-3 mb-3 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary">cloud_upload</span>
+</div>
+<p class="text-white font-medium text-sm">Click to upload or drag and drop</p>
+<p class="text-text-secondary text-xs mt-1">SVG, PNG, JPG or PDF (max. 5MB)</p>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: SPLIT LOGIC -->
+<div class="xl:col-span-5">
+<div class="bg-surface-dark rounded-xl border border-border-dark p-6 flex flex-col h-full gap-6 shadow-xl sticky top-0">
+<!-- Split Type Tabs -->
+<div class="bg-[#1c1f22] p-1 rounded-lg grid grid-cols-4 gap-1">
+<button class="py-2 text-xs font-bold text-white bg-[#2f3336] rounded shadow-sm text-center" type="button">Equal</button>
+<button class="py-2 text-xs font-medium text-text-secondary hover:text-white rounded hover:bg-[#25292e] text-center transition-colors" type="button">Unequal</button>
+<button class="py-2 text-xs font-medium text-text-secondary hover:text-white rounded hover:bg-[#25292e] text-center transition-colors" type="button">%</button>
+<button class="py-2 text-xs font-medium text-text-secondary hover:text-white rounded hover:bg-[#25292e] text-center transition-colors" type="button">Shares</button>
+</div>
+<!-- Payer Info -->
+<div class="flex items-center justify-between text-sm pb-4 border-b border-[#2f3336]">
+<div class="flex items-center gap-2">
+<span class="text-text-secondary">Paid by</span>
+<button class="bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-bold hover:bg-primary/30 transition-colors" type="button">You</button>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-text-secondary">Split with</span>
+<span class="text-white font-semibold">Everyone</span>
+</div>
+</div>
+<!-- Member List -->
+<div class="flex-1 flex flex-col gap-1 overflow-y-auto max-h-[300px] xl:max-h-none pr-1">
+<!-- Member 1 (User) -->
+<label class="flex items-center justify-between p-3 rounded-lg hover:bg-[#2f3336]/50 transition-colors cursor-pointer group">
+<div class="flex items-center gap-3">
+<div class="relative">
+<input checked="" class="peer sr-only" type="checkbox"/>
+<div class="size-5 rounded border border-[#4a5557] peer-checked:bg-primary peer-checked:border-primary flex items-center justify-center transition-all">
+<span class="material-symbols-outlined text-[14px] text-white opacity-0 peer-checked:opacity-100">check</span>
+</div>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-8" data-alt="User avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCDs6khEgGdEqlbLmAwvXD95uwq7XT-g_ExkWWvTPJjHWefILg1wZfQ3yVod0LNDKkQKQ1jjEETvI0LQRjcOqcw2MTr_xquDECm47HaQuz8j4tJ5DuLx_OmtxI-sM463SgKqGYZvirZUNdH3vJgl7G2NUsRkzJ7Ve5MXyQB9jwZIRlriYw7987e95vMxREhBBV5B-g4p5c2OQclwcK2l2hYwI921k-gi0F542LZMI8vPBMFMe342TA7nYK6ES1SunDS6_Dmyys_Npw");'></div>
+<span class="text-white font-medium text-sm">You</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="text-primary font-bold text-sm">$0.00</span>
+<span class="text-[10px] text-text-secondary">33.3%</span>
+</div>
+</label>
+<!-- Member 2 -->
+<label class="flex items-center justify-between p-3 rounded-lg hover:bg-[#2f3336]/50 transition-colors cursor-pointer group">
+<div class="flex items-center gap-3">
+<div class="relative">
+<input checked="" class="peer sr-only" type="checkbox"/>
+<div class="size-5 rounded border border-[#4a5557] peer-checked:bg-primary peer-checked:border-primary flex items-center justify-center transition-all">
+<span class="material-symbols-outlined text-[14px] text-white opacity-0 peer-checked:opacity-100">check</span>
+</div>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-8" data-alt="Alice avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCfjx9TfJLyBK4BQg2QCWcSb6gZxfUmlyUtrhzS9d9i0M99XQZuZdo_FMLem8CBludyoKdaOm-s6ei9SKwn-UztWsL3T3V36v-hPMU9mih65Cslvot8cADt2sZFsDxqgcG9PmHcS2UZJUFj5ZDVq39MtUSvsCXuJTd_7aLuaWjyBLnDjcHAp_vc3fIkXOaJM3VJQ_Y3MyKOFgsZ2xIK2t2cShke-TDBWK0JLFb6PorphemrbK7Iz7YGur-6j7M65jEs-9PLMqrzb2g");'></div>
+<span class="text-white font-medium text-sm">Alice M.</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="text-primary font-bold text-sm">$0.00</span>
+<span class="text-[10px] text-text-secondary">33.3%</span>
+</div>
+</label>
+<!-- Member 3 -->
+<label class="flex items-center justify-between p-3 rounded-lg hover:bg-[#2f3336]/50 transition-colors cursor-pointer group">
+<div class="flex items-center gap-3">
+<div class="relative">
+<input checked="" class="peer sr-only" type="checkbox"/>
+<div class="size-5 rounded border border-[#4a5557] peer-checked:bg-primary peer-checked:border-primary flex items-center justify-center transition-all">
+<span class="material-symbols-outlined text-[14px] text-white opacity-0 peer-checked:opacity-100">check</span>
+</div>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-8" data-alt="Bob avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC6Nb8wcSRprdK4EGNckMKrpA1hEn409Y4s_ELrbsw_T8CWdQAa1fK0SJnYvO00z7Wt7XHEOJhxqOzHycw3Rz2DuQIz6hTchECrB5mYf35_dgoIiDNF8D2L1jZ4ZcCgdojz_FMEEWaEBBGrL33YojcylMIM319GldRcJNpbCeRYjt2dEAUYYV84JSbA3Yk55eXdFuyWuNyRrWxLOQ2zSsg0hSWiTKlHg2IZB6THlvjbhxNxt809CzEZntxVpwTSNSt4B4vsXnxzCmE");'></div>
+<span class="text-white font-medium text-sm">Bob D.</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="text-primary font-bold text-sm">$0.00</span>
+<span class="text-[10px] text-text-secondary">33.3%</span>
+</div>
+</label>
+<!-- Member 4 (Unchecked) -->
+<label class="flex items-center justify-between p-3 rounded-lg hover:bg-[#2f3336]/50 transition-colors cursor-pointer group opacity-60 hover:opacity-100">
+<div class="flex items-center gap-3">
+<div class="relative">
+<input class="peer sr-only" type="checkbox"/>
+<div class="size-5 rounded border border-[#4a5557] peer-checked:bg-primary peer-checked:border-primary flex items-center justify-center transition-all">
+<span class="material-symbols-outlined text-[14px] text-white opacity-0 peer-checked:opacity-100">check</span>
+</div>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-8 grayscale" data-alt="Charlie avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCfZ_CFlJZ2JtlGFwtLOGNw5b_rWKf7Q76muoB2BPa4O6F5k2_thBU1dQQn1_h8NQEGBIKQELjNcYnXEVJM5aVnq2hMrOFjvm6Xnpfg2VScvRCkQbFpJb8IDq_n5XF3dtjNFFzeARDgeyiTiuDB3v4u5xNJKX-s_4wGk-udt9cLMdOUqNpZ3ZOlovx9JXFjgOxkPEzQf3TpcCp3Jbl6jEjnl3FHNc27q0og2OT_cNuDQfxxEilWlgQ9IZecn7UX8vEsZdgqrRsyeKk");'></div>
+<span class="text-text-secondary font-medium text-sm group-hover:text-white transition-colors">Charlie</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="text-text-secondary font-bold text-sm">$0.00</span>
+<span class="text-[10px] text-text-secondary">0%</span>
+</div>
+</label>
+</div>
+<!-- Advanced Settings -->
+<div class="mt-auto pt-4 border-t border-[#2f3336] flex flex-col gap-4">
+<label class="flex items-center justify-between cursor-pointer group">
+<div class="flex flex-col">
+<span class="text-white text-sm font-medium">Auto-pay from Wallet</span>
+<span class="text-xs text-text-secondary">Settle your share instantly</span>
+</div>
+<div class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-[#1c1f22] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</div>
+</label>
+</div>
+<!-- Actions -->
+<div class="flex gap-3 pt-2">
+<button class="flex-1 py-3 px-4 bg-transparent hover:bg-[#2f3336] text-white rounded-lg text-sm font-bold transition-colors" type="button">Cancel</button>
+<button class="flex-[2] py-3 px-4 bg-primary hover:bg-[#0d6e77] text-white rounded-lg text-sm font-bold shadow-lg shadow-primary/25 transition-all flex items-center justify-center gap-2" type="button">
+<span>Save Expense</span>
+<span class="material-symbols-outlined text-lg">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</form>
+</div>
+</main>
+</div>
+</body></html>

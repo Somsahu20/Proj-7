@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Profile &amp; Wallet Settings - SplitApp</title>
+<!-- Google Fonts: Manrope -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Config -->
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#0f808a",
+              "background-light": "#fafafa",
+              "background-dark": "#1c1f22",
+              "card-dark": "#23272b", // Custom card color for depth
+              "input-dark": "#1c2626", // From snippet
+              "input-border": "#3c5153", // From snippet
+              "text-secondary": "#9db6b8", // From snippet
+            },
+            fontFamily: {
+              "display": ["Manrope", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1c1f22; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3c5153; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0f808a; 
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased overflow-hidden">
+<div class="flex h-screen w-full flex-row overflow-hidden">
+<!-- Sidebar -->
+<aside class="hidden md:flex flex-col w-72 h-full border-r border-[#353a40] bg-[#111718] dark:bg-background-dark p-6 justify-between flex-shrink-0">
+<div class="flex flex-col gap-8">
+<!-- Brand -->
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shadow-lg shadow-primary/20" data-alt="Abstract geometric teal logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDUnRF_a6sKjrrc6gmnb9iZ2AEjBWzCK1VK49pHCKK1r6G2zJtATBkL_YIbxJln1lh0_wFaSIugDoalO-9qUTBZFRSxmAFfZko0eoxGCWESQyWQ8sgteg0wMeVmLAlXxwyk6alK4_qDphBK-VMNkwjgmnMXtGQj9-9iCy8VOLgLOoTeMF8edHWslckGDHtTFqsRq0GTtlnl0hjngvcl0OhfErszW_EEYqIoHwHH4lNBr2N2OxW_ueCmP164cr0NqL1WpaHVAR7J4is");'></div>
+<div class="flex flex-col">
+<h1 class="text-white text-lg font-bold leading-tight tracking-tight">SplitApp</h1>
+<p class="text-text-secondary text-xs font-medium">v2.4 Premium</p>
+</div>
+</div>
+<!-- Navigation -->
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-[#293738] group transition-colors" href="#">
+<span class="material-symbols-outlined text-text-secondary group-hover:text-white transition-colors">dashboard</span>
+<p class="text-text-secondary group-hover:text-white text-sm font-medium leading-normal transition-colors">Dashboard</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-[#293738] group transition-colors" href="#">
+<span class="material-symbols-outlined text-text-secondary group-hover:text-white transition-colors">group</span>
+<p class="text-text-secondary group-hover:text-white text-sm font-medium leading-normal transition-colors">Groups</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-[#293738] group transition-colors" href="#">
+<span class="material-symbols-outlined text-text-secondary group-hover:text-white transition-colors">show_chart</span>
+<p class="text-text-secondary group-hover:text-white text-sm font-medium leading-normal transition-colors">Activity</p>
+</a>
+<div class="flex items-center gap-3 px-3 py-3 rounded-lg bg-[#293738] border border-[#3c5153]/50 shadow-sm">
+<span class="material-symbols-outlined text-primary icon-filled">settings</span>
+<p class="text-white text-sm font-bold leading-normal">Settings</p>
+</div>
+</nav>
+</div>
+<!-- User Mini Profile -->
+<div class="flex items-center gap-3 px-3 py-3 border-t border-[#353a40] pt-6">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-8 opacity-60" data-alt="User profile picture thumbnail" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCbluoV1qD8ZxvCgYKQMJHzzDNh_c3-_vMjRfjYKxAAJ6f0Bct9xPR_e77vkEd8NOuVJVs95hsS4PSfUn50RsHYJpbzDwfmD7PeA1dde6B8xAJUTuAdP-S52KCOn3RZ5zUee6bOI6x9YCJfc4Y0nIM9EKSuw_GxRjdKZUD-hLi09-V7jJ_SUeC1UMUJ8OvbNnOt7hpy0p8DyG0ZigjISaLtPN-Y-w7QTIWB7Rrapm5vEl8Lk_6vgpper33PPFyxjUr-jvEHn3oEY_g");'></div>
+<p class="text-text-secondary text-xs">Logged in as John</p>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 h-full overflow-y-auto relative scroll-smooth">
+<div class="max-w-[1200px] mx-auto p-4 md:p-8 flex flex-col gap-8">
+<!-- Page Header -->
+<header class="flex flex-wrap justify-between items-end gap-4 pb-4 border-b border-[#353a40]">
+<div class="flex flex-col gap-2">
+<h2 class="text-white text-3xl md:text-4xl font-black leading-tight tracking-[-0.033em]">Settings &amp; Wallet</h2>
+<p class="text-text-secondary text-base font-normal max-w-lg">Manage your profile, payment methods, and global app preferences.</p>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg border border-[#3c5153] text-text-secondary hover:text-white hover:border-primary transition-colors text-sm font-medium">
+<span class="material-symbols-outlined text-[18px]">help</span>
+                        Help
+                    </button>
+</div>
+</header>
+<!-- Content Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- LEFT COLUMN (Profile & Identity) -->
+<div class="lg:col-span-4 flex flex-col gap-6">
+<!-- Profile Card -->
+<div class="bg-card-dark rounded-xl p-6 border border-[#353a40] shadow-xl shadow-black/20 flex flex-col items-center gap-6">
+<div class="relative group">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-32 border-4 border-[#293738]" data-alt="High resolution portrait of a man smiling" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBf5HGHCUZ3udbOF540iidczMNvTiistFzm1xi4AfKMCjnVJfuDKvEsIA09Ml-8xyamAlEmmDzvt-sSdNDE5q912q1ZLeE82CcPrxrs9GvetNE-PQC5vH9QfktO2hLX31AVkoTlyOyt0zkfKKOxnnH9c_DhMF_G1BYw1nevL6NnSluAwTHEx6_i8MUcI-porgrc_TSnLKfYspn_d43sua0OPKegpB76mgmcPRGaxFuDo8kpCpnK2uFeQ44qvm06x5vyBbIrnBJOEdM");'></div>
+<button class="absolute bottom-0 right-0 bg-primary hover:bg-primary/90 text-white p-2 rounded-full shadow-lg transition-transform hover:scale-105">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+</div>
+<div class="w-full flex flex-col gap-4">
+<label class="flex flex-col w-full">
+<p class="text-text-secondary text-xs font-bold uppercase tracking-wider pb-2">Full Name</p>
+<input class="w-full rounded-lg text-white focus:outline-0 focus:ring-1 focus:ring-primary border border-input-border bg-input-dark h-12 px-4 text-sm transition-colors" value="John Doe"/>
+</label>
+<label class="flex flex-col w-full">
+<p class="text-text-secondary text-xs font-bold uppercase tracking-wider pb-2">Email Address</p>
+<input class="w-full rounded-lg text-white focus:outline-0 focus:ring-1 focus:ring-primary border border-input-border bg-input-dark h-12 px-4 text-sm transition-colors" value="john@example.com"/>
+</label>
+<label class="flex flex-col w-full">
+<p class="text-text-secondary text-xs font-bold uppercase tracking-wider pb-2">Phone</p>
+<input class="w-full rounded-lg text-white focus:outline-0 focus:ring-1 focus:ring-primary border border-input-border bg-input-dark h-12 px-4 text-sm transition-colors" value="+1 (555) 012-3456"/>
+</label>
+</div>
+</div>
+<!-- Bank Status Card -->
+<div class="bg-card-dark rounded-xl p-6 border border-[#353a40] relative overflow-hidden">
+<!-- Decor element -->
+<div class="absolute -top-10 -right-10 w-32 h-32 bg-primary/10 rounded-full blur-2xl"></div>
+<div class="flex items-center justify-between mb-4 relative z-10">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">account_balance</span>
+<h3 class="text-white font-bold text-base">Bank Account</h3>
+</div>
+<span class="px-2 py-1 rounded bg-green-500/20 text-green-400 text-xs font-bold border border-green-500/30 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">verified_user</span>
+                                Verified
+                            </span>
+</div>
+<div class="flex items-center gap-4 mb-6 relative z-10">
+<div class="bg-white p-2 rounded w-12 h-8 flex items-center justify-center">
+<img alt="Mastercard logo" class="h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDeMHKuEoOc1SHRAKYlQ2pvTsCmjHPRl-2kVxyVhhUWPCQB4BaLzm67mvc90_pwT0RoCAZehwb7shxe7CgxBpqPpjpcf1E0iPkJmXeRkq65ODIIaul4MqGvTz_SXMha7aYhL9ePMADk9rAiTvPOtsttce4sfFmkPHfbJrEy8Q9HxvyhohpYcXjSez_Z2INMVy3WDVIAp3C_3U7hHNkqzpSiPkR6Yk6kfTLtq5AtNWRcBunfB--wPmE7XoU1DmnOlBKojAdHxhccuA8"/>
+</div>
+<div>
+<p class="text-white text-sm font-medium">Mastercard •••• 4589</p>
+<p class="text-text-secondary text-xs">Exp 12/28</p>
+</div>
+</div>
+<button class="w-full py-2 rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/10 text-sm font-medium transition-colors relative z-10">
+                            Unlink Account
+                        </button>
+</div>
+</div>
+<!-- RIGHT COLUMN (Wallet & Settings) -->
+<div class="lg:col-span-8 flex flex-col gap-6">
+<!-- Wallet Hero Card -->
+<div class="bg-card-dark rounded-xl p-6 md:p-8 border border-[#353a40] shadow-xl relative overflow-hidden group">
+<!-- Abstract Gradient Mesh for Wallet -->
+<div class="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-primary/10 to-transparent pointer-events-none"></div>
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 relative z-10">
+<div class="flex flex-col gap-1">
+<p class="text-text-secondary text-sm font-medium uppercase tracking-widest">Total Balance</p>
+<div class="flex items-baseline gap-1">
+<span class="text-5xl md:text-6xl font-display font-bold text-white tracking-tighter">$142.50</span>
+<span class="text-primary text-lg font-bold">+2.4%</span>
+</div>
+<p class="text-text-secondary text-xs mt-1">Last updated just now</p>
+</div>
+<div class="flex gap-3 w-full md:w-auto">
+<button class="flex-1 md:flex-none flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white h-12 px-6 rounded-lg font-bold transition-all shadow-lg shadow-primary/25">
+<span class="material-symbols-outlined">add</span>
+                                    Add Funds
+                                </button>
+<button class="flex-1 md:flex-none flex items-center justify-center gap-2 bg-[#293738] hover:bg-[#344445] text-white border border-[#3c5153] h-12 px-6 rounded-lg font-bold transition-all">
+<span class="material-symbols-outlined">arrow_upward</span>
+                                    Withdraw
+                                </button>
+</div>
+</div>
+<!-- Sparkline Visualization -->
+<div class="mt-8 h-16 w-full flex items-end gap-1 opacity-50">
+<div class="bg-primary/40 flex-1 rounded-t-sm h-[30%]" title="Day 1"></div>
+<div class="bg-primary/40 flex-1 rounded-t-sm h-[50%]" title="Day 2"></div>
+<div class="bg-primary/40 flex-1 rounded-t-sm h-[40%]" title="Day 3"></div>
+<div class="bg-primary/60 flex-1 rounded-t-sm h-[70%]" title="Day 4"></div>
+<div class="bg-primary/40 flex-1 rounded-t-sm h-[50%]" title="Day 5"></div>
+<div class="bg-primary/40 flex-1 rounded-t-sm h-[60%]" title="Day 6"></div>
+<div class="bg-primary/40 flex-1 rounded-t-sm h-[40%]" title="Day 7"></div>
+<div class="bg-primary/40 flex-1 rounded-t-sm h-[80%]" title="Day 8"></div>
+<div class="bg-primary/40 flex-1 rounded-t-sm h-[60%]" title="Day 9"></div>
+<div class="bg-primary/80 flex-1 rounded-t-sm h-[90%]" title="Day 10"></div>
+<div class="bg-primary flex-1 rounded-t-sm h-[100%]" title="Today"></div>
+</div>
+</div>
+<!-- Layout: Transactions + Small Settings -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Transaction History -->
+<div class="bg-card-dark rounded-xl border border-[#353a40] flex flex-col h-full md:col-span-2 xl:col-span-1">
+<div class="p-4 border-b border-[#353a40] flex justify-between items-center">
+<h3 class="text-white font-bold">Recent Activity</h3>
+<a class="text-primary text-xs font-bold hover:underline" href="#">View All</a>
+</div>
+<div class="flex flex-col divide-y divide-[#353a40]">
+<!-- Item 1 -->
+<div class="p-4 flex items-center justify-between hover:bg-[#293738] transition-colors cursor-pointer group">
+<div class="flex items-center gap-3">
+<div class="bg-orange-500/10 text-orange-400 p-2 rounded-lg group-hover:bg-orange-500/20 transition-colors">
+<span class="material-symbols-outlined">shopping_cart</span>
+</div>
+<div>
+<p class="text-white text-sm font-semibold">Grocery Run</p>
+<p class="text-text-secondary text-xs">Oct 24 • Split with 3 people</p>
+</div>
+</div>
+<span class="text-white font-medium">-$24.00</span>
+</div>
+<!-- Item 2 -->
+<div class="p-4 flex items-center justify-between hover:bg-[#293738] transition-colors cursor-pointer group">
+<div class="flex items-center gap-3">
+<div class="bg-green-500/10 text-green-400 p-2 rounded-lg group-hover:bg-green-500/20 transition-colors">
+<span class="material-symbols-outlined">add_card</span>
+</div>
+<div>
+<p class="text-white text-sm font-semibold">Wallet Top-up</p>
+<p class="text-text-secondary text-xs">Oct 22 • From Bank</p>
+</div>
+</div>
+<span class="text-green-400 font-medium">+$100.00</span>
+</div>
+<!-- Item 3 -->
+<div class="p-4 flex items-center justify-between hover:bg-[#293738] transition-colors cursor-pointer group">
+<div class="flex items-center gap-3">
+<div class="bg-blue-500/10 text-blue-400 p-2 rounded-lg group-hover:bg-blue-500/20 transition-colors">
+<span class="material-symbols-outlined">movie</span>
+</div>
+<div>
+<p class="text-white text-sm font-semibold">Cinema Tickets</p>
+<p class="text-text-secondary text-xs">Oct 20 • Split with Sarah</p>
+</div>
+</div>
+<span class="text-white font-medium">-$18.50</span>
+</div>
+</div>
+</div>
+<!-- Settings Grid Right Side -->
+<div class="flex flex-col gap-6 md:col-span-2 xl:col-span-1">
+<!-- Auto-Pay Settings -->
+<div class="bg-card-dark rounded-xl border border-[#353a40] p-5">
+<div class="flex items-center gap-3 mb-4">
+<div class="p-2 bg-primary/20 rounded-full text-primary">
+<span class="material-symbols-outlined text-[20px]">autorenew</span>
+</div>
+<h3 class="text-white font-bold">Auto-Pay</h3>
+</div>
+<div class="flex items-center justify-between mb-4">
+<span class="text-sm text-text-secondary">Enable auto-settle</span>
+<button class="w-12 h-6 rounded-full bg-primary relative transition-colors focus:outline-none shadow-inner">
+<span class="absolute right-1 top-1 w-4 h-4 bg-white rounded-full shadow-sm transition-transform"></span>
+</button>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs text-text-secondary">
+<span>Threshold</span>
+<span class="text-white font-bold">$50.00</span>
+</div>
+<input class="w-full h-1 bg-[#3c5153] rounded-lg appearance-none cursor-pointer accent-primary" max="100" min="0" type="range" value="50"/>
+<p class="text-[11px] text-text-secondary leading-tight mt-2">
+                                        Debts under this amount will be automatically paid to trusted friends.
+                                    </p>
+</div>
+</div>
+<!-- Notification Settings -->
+<div class="bg-card-dark rounded-xl border border-[#353a40] p-5">
+<div class="flex items-center gap-3 mb-4">
+<div class="p-2 bg-purple-500/20 rounded-full text-purple-400">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</div>
+<h3 class="text-white font-bold">Notifications</h3>
+</div>
+<div class="space-y-3">
+<label class="flex items-center gap-3 cursor-pointer group">
+<div class="relative flex items-center">
+<input checked="" class="peer h-5 w-5 cursor-pointer appearance-none rounded border border-[#3c5153] bg-input-dark checked:border-primary checked:bg-primary transition-all" type="checkbox"/>
+<span class="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 peer-checked:opacity-100">
+<span class="material-symbols-outlined text-[16px] font-bold">check</span>
+</span>
+</div>
+<span class="text-sm text-text-secondary group-hover:text-white transition-colors">Added to expense</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<div class="relative flex items-center">
+<input checked="" class="peer h-5 w-5 cursor-pointer appearance-none rounded border border-[#3c5153] bg-input-dark checked:border-primary checked:bg-primary transition-all" type="checkbox"/>
+<span class="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 peer-checked:opacity-100">
+<span class="material-symbols-outlined text-[16px] font-bold">check</span>
+</span>
+</div>
+<span class="text-sm text-text-secondary group-hover:text-white transition-colors">Monthly summary</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<div class="relative flex items-center">
+<input class="peer h-5 w-5 cursor-pointer appearance-none rounded border border-[#3c5153] bg-input-dark checked:border-primary checked:bg-primary transition-all" type="checkbox"/>
+<span class="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 peer-checked:opacity-100">
+<span class="material-symbols-outlined text-[16px] font-bold">check</span>
+</span>
+</div>
+<span class="text-sm text-text-secondary group-hover:text-white transition-colors">Marketing updates</span>
+</label>
+</div>
+</div>
+<!-- Theme Toggle -->
+<div class="bg-card-dark rounded-xl border border-[#353a40] p-4 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-text-secondary">dark_mode</span>
+<span class="text-sm text-white font-medium">Dark Mode</span>
+</div>
+<button class="w-10 h-5 rounded-full bg-primary relative transition-colors shadow-inner">
+<span class="absolute right-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow-sm"></span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

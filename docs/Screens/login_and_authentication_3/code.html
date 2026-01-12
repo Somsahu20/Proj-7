@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Group Detail - SplitSync</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;family=Noto+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0f808a",
+                        "primary-bright": "#2dd4bf", 
+                        "neon-green": "#39ff14",     
+                        "background-light": "#fafafa",
+                        "background-dark": "#1c1f22", 
+                        "surface-dark": "#2a2d30",    
+                        "surface-darker": "#15171a",  
+                        "border-dark": "#3c5153",
+                        "input-bg": "#1c2626",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    boxShadow: {
+                        'glow': '0 0 15px rgba(45, 212, 191, 0.3)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .text-glow {
+            text-shadow: 0 0 8px rgba(45, 212, 191, 0.6);
+        }::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1c1f22; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3c5153; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4a6366; 
+        }
+    </style>
+</head>
+<body class="font-display bg-background-dark text-white antialiased overflow-hidden h-screen flex selection:bg-primary-bright selection:text-black">
+<aside class="hidden lg:flex w-64 bg-surface-darker border-r border-border-dark flex-col flex-shrink-0 z-20">
+<div class="h-16 flex items-center px-6 border-b border-border-dark/50">
+<div class="flex items-center justify-center w-8 h-8 rounded-lg bg-primary/20 text-primary-bright mr-3 border border-primary/20">
+<span class="material-symbols-outlined text-[20px]">account_balance_wallet</span>
+</div>
+<span class="text-lg font-bold tracking-tight text-white">SplitSync</span>
+</div>
+<nav class="flex-1 p-4 space-y-1 overflow-y-auto">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[22px] group-hover:text-primary-bright transition-colors">dashboard</span>
+<span class="font-medium text-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[22px] group-hover:text-primary-bright transition-colors">receipt_long</span>
+<span class="font-medium text-sm">Recent Activity</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary-bright ring-1 ring-primary/20 mt-2" href="#">
+<span class="material-symbols-outlined text-[22px]">group_work</span>
+<span class="font-medium text-sm">Trip to Bali</span>
+</a>
+<div class="pt-6 pb-2">
+<p class="px-3 text-xs font-bold text-gray-500 uppercase tracking-wider">Your Groups</p>
+</div>
+<a class="flex items-center gap-3 px-3 py-2 text-gray-400 hover:text-white transition-colors" href="#">
+<span class="w-2 h-2 rounded-full bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.5)]"></span>
+<span class="font-medium text-sm">House Rent</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-gray-400 hover:text-white transition-colors" href="#">
+<span class="w-2 h-2 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.5)]"></span>
+<span class="font-medium text-sm">Friday Poker</span>
+</a>
+</nav>
+<div class="p-4 border-t border-border-dark/50">
+<button class="flex items-center gap-3 w-full hover:bg-white/5 p-2 rounded-lg transition-colors text-left">
+<div class="w-9 h-9 rounded-full bg-gradient-to-tr from-primary to-blue-600 flex items-center justify-center font-bold text-sm shadow-lg">
+                JD
+            </div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-semibold text-white truncate">John Doe</p>
+<p class="text-xs text-gray-400 truncate">john@example.com</p>
+</div>
+<span class="material-symbols-outlined text-gray-500 text-[18px]">more_vert</span>
+</button>
+</div>
+</aside>
+<main class="flex-1 flex flex-col min-w-0 bg-background-dark relative overflow-hidden">
+<div class="relative w-full h-72 shrink-0 group">
+<img alt="Friends dining" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAz7m0j0xjjJLF5XO6CjwWODf2vSnS5uCno61e8QRSw2o4S6n6vkhTPtD5WpzVhMIDCWVVq0TOoekGJbWDmj9SxVWrdkFaEg4iCGO22uE6Q_15Qnf6EF8QS7vuf9uJG7rr4pkm7S9MxJ_hIYPtonDmbcmuV8DoEuTtiVSE9Wf766_sG5EmdVy0RORMGhC-ip6C2UCzm4zoBcZgTCeaLcR0FGUpFIoBmeJ9UKmFhR9O0CZK4vvxWzCuutKFpXyHqKESHXToXFwfF5E0"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark via-background-dark/80 to-transparent"></div>
+<div class="absolute inset-0 bg-primary/10 mix-blend-overlay"></div>
+<div class="absolute top-6 right-6 flex gap-3 z-10">
+<button class="px-3 py-2 rounded-lg bg-black/40 backdrop-blur-md border border-white/10 hover:bg-white/10 transition-colors text-sm font-medium flex items-center gap-2 text-white">
+<span class="material-symbols-outlined text-[18px]">person_add</span>
+                Invite
+            </button>
+<button class="w-9 h-9 flex items-center justify-center rounded-lg bg-black/40 backdrop-blur-md border border-white/10 hover:bg-white/10 transition-colors text-white">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+</button>
+</div>
+<div class="absolute bottom-0 left-0 w-full px-8 pb-6 z-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<div class="flex items-center gap-3 mb-3">
+<span class="bg-primary/20 text-primary-bright px-2.5 py-0.5 rounded text-[11px] font-bold border border-primary/20 uppercase tracking-wide">Trip</span>
+<span class="text-gray-400 text-xs font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">calendar_today</span> Oct 12 - Oct 24, 2023
+                    </span>
+</div>
+<h1 class="text-4xl md:text-5xl font-extrabold text-white mb-3 tracking-tight drop-shadow-lg">Trip to Bali 🌴</h1>
+<div class="flex items-center gap-2 text-gray-300">
+<span class="material-symbols-outlined text-[20px] text-gray-400">account_balance</span>
+<span class="text-sm">Total group spend: <span class="text-white font-bold tracking-wide">$4,285.50</span></span>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="px-5 py-2.5 rounded-lg bg-surface-dark border border-border-dark text-white font-medium hover:bg-gray-700 hover:border-gray-500 transition-colors flex items-center gap-2 shadow-lg">
+<span class="material-symbols-outlined text-[20px]">file_upload</span>
+                    Export
+                </button>
+<button class="px-5 py-2.5 rounded-lg bg-orange-600 hover:bg-orange-500 text-white font-bold transition-all flex items-center gap-2 shadow-lg shadow-orange-900/40">
+<span class="material-symbols-outlined text-[20px]">payments</span>
+                    Settle Up
+                </button>
+<button class="px-5 py-2.5 rounded-lg bg-primary hover:bg-primary-bright hover:text-black text-white font-bold transition-all flex items-center gap-2 shadow-lg shadow-primary/30 group">
+<span class="material-symbols-outlined text-[20px] group-hover:rotate-90 transition-transform">add</span>
+                    Add Expense
+                </button>
+</div>
+</div>
+</div>
+<div class="border-b border-border-dark bg-background-dark sticky top-0 z-10 px-8 flex items-center justify-between shadow-md">
+<div class="flex space-x-8">
+<button class="py-4 border-b-2 border-primary-bright text-primary-bright font-bold text-sm tracking-wide">Expenses</button>
+<button class="py-4 border-b-2 border-transparent text-gray-400 hover:text-white font-medium text-sm transition-colors">Balances</button>
+<button class="py-4 border-b-2 border-transparent text-gray-400 hover:text-white font-medium text-sm transition-colors">Charts</button>
+<button class="py-4 border-b-2 border-transparent text-gray-400 hover:text-white font-medium text-sm transition-colors">Media</button>
+</div>
+<div class="hidden md:flex items-center gap-2 text-gray-400">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[18px] text-gray-500 group-focus-within:text-primary-bright transition-colors">search</span>
+<input class="bg-surface-dark border border-transparent focus:border-primary/50 rounded-full py-1.5 pl-9 pr-4 text-sm text-gray-200 focus:ring-1 focus:ring-primary w-56 placeholder-gray-600 transition-all" placeholder="Search expenses..." type="text"/>
+</div>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto">
+<div class="grid grid-cols-12 gap-4 px-8 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider border-b border-border-dark bg-surface-darker/50 sticky top-0 backdrop-blur-sm z-0">
+<div class="col-span-2">Date</div>
+<div class="col-span-5">Description</div>
+<div class="col-span-3 text-right">Payer</div>
+<div class="col-span-2 text-right">Your Share</div>
+</div>
+<div class="flex flex-col pb-10">
+<div class="grid grid-cols-12 gap-4 px-8 py-4 items-center bg-surface-dark border-b border-white/5 hover:bg-white/10 transition-colors cursor-pointer group">
+<div class="col-span-2 flex flex-col justify-center">
+<span class="text-sm font-bold text-gray-300">Oct 24</span>
+<span class="text-xs text-gray-500 font-medium">Tue</span>
+</div>
+<div class="col-span-5 flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-[#1c2626] border border-border-dark flex items-center justify-center text-primary-bright shadow-inner">
+<span class="material-symbols-outlined text-[20px]">flight</span>
+</div>
+<div>
+<p class="text-sm font-bold text-gray-100 group-hover:text-primary-bright transition-colors">Return Flights</p>
+<p class="text-xs text-gray-500">Flights for everyone</p>
+</div>
+</div>
+<div class="col-span-3 text-right">
+<p class="text-xs text-gray-400 mb-0.5">Sarah paid</p>
+<p class="text-sm font-medium text-white">$1,240.00</p>
+</div>
+<div class="col-span-2 text-right">
+<p class="text-xs text-gray-400 mb-0.5">You borrowed</p>
+<p class="text-sm font-bold text-orange-400">310.00</p>
+</div>
+</div>
+<div class="grid grid-cols-12 gap-4 px-8 py-4 items-center bg-background-dark border-b border-white/5 hover:bg-white/10 transition-colors cursor-pointer group">
+<div class="col-span-2 flex flex-col justify-center">
+<span class="text-sm font-bold text-gray-300">Oct 23</span>
+<span class="text-xs text-gray-500 font-medium">Mon</span>
+</div>
+<div class="col-span-5 flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-[#1c2626] border border-border-dark flex items-center justify-center text-pink-400 shadow-inner">
+<span class="material-symbols-outlined text-[20px]">restaurant</span>
+</div>
+<div>
+<p class="text-sm font-bold text-gray-100 group-hover:text-primary-bright transition-colors">Dinner at Rock Bar</p>
+<p class="text-xs text-gray-500">Food &amp; Drinks</p>
+</div>
+</div>
+<div class="col-span-3 text-right">
+<p class="text-xs text-gray-400 mb-0.5">You paid</p>
+<p class="text-sm font-medium text-white">$450.00</p>
+</div>
+<div class="col-span-2 text-right">
+<p class="text-xs text-gray-400 mb-0.5">You lent</p>
+<p class="text-sm font-bold text-primary-bright text-glow">337.50</p>
+</div>
+</div>
+<div class="grid grid-cols-12 gap-4 px-8 py-4 items-center bg-surface-dark border-b border-white/5 hover:bg-white/10 transition-colors cursor-pointer group">
+<div class="col-span-2 flex flex-col justify-center">
+<span class="text-sm font-bold text-gray-300">Oct 22</span>
+<span class="text-xs text-gray-500 font-medium">Sun</span>
+</div>
+<div class="col-span-5 flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-[#1c2626] border border-border-dark flex items-center justify-center text-yellow-400 shadow-inner">
+<span class="material-symbols-outlined text-[20px]">local_taxi</span>
+</div>
+<div>
+<p class="text-sm font-bold text-gray-100 group-hover:text-primary-bright transition-colors">Uber to Hotel</p>
+<p class="text-xs text-gray-500">Transportation</p>
+</div>
+</div>
+<div class="col-span-3 text-right">
+<p class="text-xs text-gray-400 mb-0.5">Mike paid</p>
+<p class="text-sm font-medium text-white">$45.00</p>
+</div>
+<div class="col-span-2 text-right">
+<p class="text-xs text-gray-400 mb-0.5">You borrowed</p>
+<p class="text-sm font-bold text-orange-400">11.25</p>
+</div>
+</div>
+<div class="grid grid-cols-12 gap-4 px-8 py-4 items-center bg-background-dark border-b border-white/5 hover:bg-white/10 transition-colors cursor-pointer group">
+<div class="col-span-2 flex flex-col justify-center">
+<span class="text-sm font-bold text-gray-300">Oct 21</span>
+<span class="text-xs text-gray-500 font-medium">Sat</span>
+</div>
+<div class="col-span-5 flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-[#1c2626] border border-border-dark flex items-center justify-center text-blue-400 shadow-inner">
+<span class="material-symbols-outlined text-[20px]">water_drop</span>
+</div>
+<div>
+<p class="text-sm font-bold text-gray-100 group-hover:text-primary-bright transition-colors">Scuba Diving</p>
+<p class="text-xs text-gray-500">Activities</p>
+</div>
+</div>
+<div class="col-span-3 text-right">
+<p class="text-xs text-gray-400 mb-0.5">Sarah paid</p>
+<p class="text-sm font-medium text-white">$280.00</p>
+</div>
+<div class="col-span-2 text-right">
+<p class="text-xs text-gray-400 mb-0.5">not involved</p>
+<p class="text-sm font-bold text-gray-600">-</p>
+</div>
+</div>
+<div class="grid grid-cols-12 gap-4 px-8 py-4 items-center bg-surface-dark border-b border-white/5 hover:bg-white/10 transition-colors cursor-pointer group">
+<div class="col-span-2 flex flex-col justify-center">
+<span class="text-sm font-bold text-gray-300">Oct 20</span>
+<span class="text-xs text-gray-500 font-medium">Fri</span>
+</div>
+<div class="col-span-5 flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-[#1c2626] border border-border-dark flex items-center justify-center text-purple-400 shadow-inner">
+<span class="material-symbols-outlined text-[20px]">shopping_bag</span>
+</div>
+<div>
+<p class="text-sm font-bold text-gray-100 group-hover:text-primary-bright transition-colors">Groceries</p>
+<p class="text-xs text-gray-500">General</p>
+</div>
+</div>
+<div class="col-span-3 text-right">
+<p class="text-xs text-gray-400 mb-0.5">You paid</p>
+<p class="text-sm font-medium text-white">$150.00</p>
+</div>
+<div class="col-span-2 text-right">
+<p class="text-xs text-gray-400 mb-0.5">You lent</p>
+<p class="text-sm font-bold text-primary-bright text-glow">112.50</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<aside class="w-80 bg-surface-darker border-l border-border-dark hidden xl:flex flex-col overflow-y-auto">
+<div class="p-6 space-y-8">
+<div class="bg-gradient-to-br from-[#2a2d30] to-[#1c1f22] rounded-2xl p-5 border border-border-dark shadow-xl relative overflow-hidden group">
+<div class="absolute -top-2 -right-2 p-3 opacity-5 group-hover:opacity-10 transition-opacity">
+<span class="material-symbols-outlined text-[80px] text-neon-green">bolt</span>
+</div>
+<div class="relative z-10">
+<div class="flex items-center gap-2 mb-2 text-neon-green">
+<span class="material-symbols-outlined text-[20px]">bolt</span>
+<span class="text-[10px] font-bold uppercase tracking-wider">Smart Feature</span>
+</div>
+<h3 class="font-bold text-white text-lg leading-tight">Auto-payment</h3>
+<p class="text-xs text-gray-400 mt-1 mb-5 leading-relaxed">Automatically settle debts under $50 with your connected wallet.</p>
+<div class="flex items-center justify-between mt-2 pt-4 border-t border-white/5">
+<span class="text-sm font-bold text-gray-300">Enabled</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-neon-green/50 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-neon-green shadow-inner"></div>
+</label>
+</div>
+</div>
+</div>
+<div>
+<h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">Your Balance</h3>
+<div class="flex items-end gap-2 bg-surface-dark p-4 rounded-xl border border-white/5">
+<span class="text-3xl font-extrabold text-primary-bright text-glow tracking-tight">+$128.75</span>
+</div>
+<p class="text-xs text-gray-400 mt-2 px-1">You get back mostly from Sarah.</p>
+</div>
+<div>
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider">Group Members (4)</h3>
+<button class="text-primary-bright hover:text-white transition-colors bg-primary/10 hover:bg-primary/20 p-1.5 rounded-lg">
+<span class="material-symbols-outlined text-[18px]">person_add</span>
+</button>
+</div>
+<div class="space-y-1">
+<div class="flex items-center justify-between group p-3 rounded-xl hover:bg-white/5 transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-gradient-to-br from-gray-700 to-gray-900 border border-gray-600 flex items-center justify-center text-[10px] font-bold text-gray-300 shadow-md">
+                            YOU
+                        </div>
+<div>
+<p class="text-sm font-bold text-white">You</p>
+<p class="text-xs text-primary-bright font-medium">Settled up</p>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between group p-3 rounded-xl bg-white/[0.02] hover:bg-white/5 transition-colors cursor-pointer border border-transparent hover:border-white/5">
+<div class="flex items-center gap-3">
+<img alt="Sarah" class="w-9 h-9 rounded-full border border-gray-600 object-cover shadow-md" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeXk34o90_U9C4_yzsaJjNu99k8YL7cXPrb5frMcxmCklzO41DEXt67Nnlx1WkeFoR6KpbiiyE5rj9L-WEexm8PJQpr5MZaCTunLPuSZ_4jn11QkKCvqHXAOPpUQO2043ZqmXVUuajDZvVYyAqvssrtWcr1IQTroROlBGBnuuyAYSO-opKvfnLrqN5xqLpcntcPpMf4zSL7RgfVegxsp2tKOG0495kXFZNRB3mog89WzRLd6C3aP4ILNHkvcb7IyhUZZgCGb8Uzr0"/>
+<div>
+<p class="text-sm font-bold text-white">Sarah M.</p>
+<p class="text-xs text-gray-500 font-medium">owes you</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold text-primary-bright text-glow">+$145.50</p>
+</div>
+</div>
+<div class="flex items-center justify-between group p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer border border-transparent hover:border-white/5">
+<div class="flex items-center gap-3">
+<img alt="Mike" class="w-9 h-9 rounded-full border border-gray-600 object-cover shadow-md" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNQtgsULMnTSQM-fufXMlCLzB72NVn58JSFqFH1owaW6_j_SBtYz8L3i3pu3hDzGb9tJVt9Qx8JkMwZ3ZcRKvpz1krJX7VdBvoQ3n0SSRmK6VjG4U_dx0Gse1Jqepc6X-warT2oRpamF0KpfMI4tjZtiGqvijwP4k5m12yGSDQC0aU8MTWrwmKVTks0BJHB4Lu0p6pzOZcs709AlsfWHcubwmVvH2uboJsUi1q6SAnNQGyYnLvrI6cJsuZjKCLKuBDs2_riafJbTE"/>
+<div>
+<p class="text-sm font-bold text-white">Mike R.</p>
+<p class="text-xs text-gray-500 font-medium">you owe</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold text-orange-400">-$16.75</p>
+</div>
+</div>
+<div class="flex items-center justify-between group p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer border border-transparent hover:border-white/5">
+<div class="flex items-center gap-3">
+<img alt="Jessica" class="w-9 h-9 rounded-full border border-gray-600 object-cover shadow-md" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVD4lVygwT8X2btTQbow7oyyXl4KFVT8KOXVlyaEM7S3PEcaCFZhds2LFl-tQ7l5KAzKYNlhikzNse30ck0npARAVIGv8zxJb9kvufcCyby4vmQXq3iGzr7uFrmJjuMJTkzXQG9acrFJI8LHKplZSY4PowKGoYUsM1S79tOdCr7yRKLT22jdkhoJ7dk5RRZjDeDSEix7X6QG_GBLu4KBzt1sCucamFJBFETUiibRM4k_J4BbDcJbeajadOI7dxjiYh7oVR0tyV6c0"/>
+<div>
+<p class="text-sm font-bold text-white">Jessica</p>
+<p class="text-xs text-gray-500 font-medium">settled up</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold text-gray-600">$0.00</p>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-auto bg-[#1c2626] rounded-xl p-4 border border-border-dark flex gap-3 shadow-lg">
+<div class="w-8 h-8 rounded-full bg-yellow-500/10 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-yellow-500 text-[18px]">lightbulb</span>
+</div>
+<div>
+<p class="text-xs font-bold text-gray-200 mb-0.5">Pro Tip</p>
+<p class="text-xs text-gray-400 leading-relaxed">Expenses can be split by percentage or shares in settings.</p>
+</div>
+</div>
+</div>
+</aside>
+
+</body></html>
