@@ -54,7 +54,7 @@ export function LoginPage() {
             <PiggyBank className="h-12 w-12 text-primary" />
           </div>
           <CardTitle className="text-2xl">Welcome back</CardTitle>
-          <CardDescription>Sign in to your SplitWise account</CardDescription>
+          <CardDescription>Sign in to your MoneyByte account</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
           <CardContent className="space-y-4">

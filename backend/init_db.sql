@@ -1,5 +1,5 @@
 -- Create database
--- Run this command in psql: CREATE DATABASE splitwise;
+-- Run this command in psql: CREATE DATABASE moneybyte;
 
 -- The tables are automatically created by SQLAlchemy when the app starts.
 -- This file contains additional indexes and optimizations.

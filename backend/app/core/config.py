@@ -5,7 +5,7 @@ import secrets
 
 class Settings(BaseSettings):
     # App
-    APP_NAME: str = "SplitWise Clone"
+    APP_NAME: str = "MoneyByte"
     DEBUG: bool = True
     API_V1_PREFIX: str = "/api/v1"
 
@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
 
     # Database
-    DATABASE_URL: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/splitwise"
+    DATABASE_URL: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/moneybyte"
 
     # Google OAuth
     GOOGLE_CLIENT_ID: str = ""
@@ -30,7 +30,7 @@ class Settings(BaseSettings):
     SMTP_PORT: int = 587
     SMTP_USER: str = ""
     SMTP_PASSWORD: str = ""
-    EMAIL_FROM: str = "noreply@splitwise.com"
+    EMAIL_FROM: str = "noreply@moneybyte.com"
 
     # File Upload
     UPLOAD_DIR: str = "uploads"

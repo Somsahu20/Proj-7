@@ -68,7 +68,7 @@ cp .env.example .env
 
 6. Create PostgreSQL database:
 ```bash
-createdb splitwise
+createdb moneybyte
 ```
 
 7. Run the backend:

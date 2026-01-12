@@ -40,7 +40,7 @@ export function Header() {
         <div className="mr-4 flex">
           <Link to="/dashboard" className="flex items-center space-x-2">
             <PiggyBank className="h-6 w-6 text-primary" />
-            <span className="font-bold">SplitWise</span>
+            <span className="font-bold">MoneyByte</span>
           </Link>
         </div>
 
