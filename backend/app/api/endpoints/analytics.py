@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func, and_
+from sqlalchemy import select, func, and_, or_
 from sqlalchemy.orm import selectinload
 from typing import cast
 from decimal import Decimal
@@ -228,7 +228,10 @@ async def get_friends_analytics(
             and_(
                 Membership.user_id == current_user.id,
                 Membership.is_active == True,
-                Group.is_friend_group == True,
+                or_(
+                    Group.is_friend_group == True,
+                    Group.category == "friends",
+                ),
                 Group.is_deleted == False
             )
         )
