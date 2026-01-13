@@ -9,7 +9,8 @@ services:
   - type: web
     name: moneybyte-backend
     runtime: docker
-    dockerfilePath: ./backend/
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
     plan: free
     envVars:
       - key: DATABASE_URL
@@ -40,5 +41,6 @@ services:
   - type: web
     name: moneybyte-frontend
     runtime: docker
-    dockerfilePath: ./frontend/
+    dockerfilePath: ./frontend/Dockerfile
+    dockerContext: ./frontend
     plan: free
