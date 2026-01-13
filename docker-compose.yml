@@ -59,6 +59,8 @@ services:
       dockerfile: Dockerfile
     container_name: moneybyte-frontend
     restart: unless-stopped
+    environment:
+      - BACKEND_URL=http://backend:8000
     ports:
       - "80:80"
     depends_on:

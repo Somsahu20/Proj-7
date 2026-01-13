@@ -44,3 +44,6 @@ services:
     dockerfilePath: ./frontend/Dockerfile
     dockerContext: ./frontend
     plan: free
+    envVars:
+      - key: BACKEND_URL
+        value: https://moneybyte-backend.onrender.com
