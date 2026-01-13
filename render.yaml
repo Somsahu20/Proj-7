@@ -10,8 +10,6 @@ services:
     name: moneybyte-backend
     runtime: docker
     rootDir: backend
-    dockerfilePath: ./Dockerfile
-    dockerContext: .
     plan: free
     envVars:
       - key: DATABASE_URL
@@ -43,6 +41,4 @@ services:
     name: moneybyte-frontend
     runtime: docker
     rootDir: frontend
-    dockerfilePath: ./Dockerfile
-    dockerContext: .
     plan: free
