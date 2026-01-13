@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { notificationService } from '@/services/notifications';
 import { useNotificationStore } from '@/store/notificationStore';
@@ -9,7 +10,7 @@ import { cn } from '@/lib/utils';
 
 export function NotificationsPage() {
   const queryClient = useQueryClient();
-  const { markAsRead, markAllAsRead } = useNotificationStore();
+  const { markAsRead, markAllAsRead, setUnreadCount, setNotifications } = useNotificationStore();
 
   const { data, isLoading } = useQuery({
     queryKey: ['notifications'],
@@ -41,6 +42,14 @@ export function NotificationsPage() {
 
   const notifications = data?.notifications || [];
   const unreadCount = data?.unread_count || 0;
+
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+    setNotifications(notifications);
+    setUnreadCount(unreadCount);
+  }, [data, notifications, setNotifications, setUnreadCount, unreadCount]);
 
   const getNotificationIcon = (type: string) => {
     switch (type) {

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Query, Request
+from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func, and_, update
 from sqlalchemy.orm import selectinload
@@ -12,6 +12,7 @@ from sse_starlette.sse import EventSourceResponse
 
 from app.db.database import get_db
 from app.api.deps import get_current_user
+from app.core.security import decode_token
 from app.models import User, Notification, Membership
 from app.schemas import (
     NotificationResponse, NotificationListResponse, UnreadCountResponse,
@@ -233,11 +234,33 @@ async def event_generator(user_id: uuid.UUID) -> AsyncGenerator:
 
 @router.get("/stream/events")
 async def sse_events(
-    request: Request,
-    current_user: User = Depends(get_current_user)
+    token: str = Query(...),
+    db: AsyncSession = Depends(get_db),
 ):
     """SSE endpoint for real-time notifications."""
-    return EventSourceResponse(event_generator(current_user.id))
+    payload = decode_token(token)
+    if payload is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or expired token"
+        )
+
+    user_id = payload.get("sub")
+    if user_id is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid token payload"
+        )
+
+    result = await db.execute(select(User).where(User.id == uuid.UUID(user_id)))
+    user = result.scalar_one_or_none()
+    if user is None or not getattr(user, "is_active", False):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="User not found or inactive"
+        )
+
+    return EventSourceResponse(event_generator(user.id))
 
 
 async def send_sse_event(user_id: uuid.UUID, event_type: str, data: dict):

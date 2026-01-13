@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/store/authStore';
 import { useNotificationStore } from '@/store/notificationStore';
+import { notificationService } from '@/services/notifications';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -13,13 +14,66 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Bell, LogOut, Settings, User, Menu, X, Home, Users, Receipt, CreditCard, PiggyBank, UserPlus, Mail } from 'lucide-react';
 import { getInitials } from '@/lib/utils';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export function Header() {
   const { user, logout } = useAuthStore();
-  const { unreadCount } = useNotificationStore();
+  const { unreadCount, setUnreadCount, addNotification, incrementUnreadCount } = useNotificationStore();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (!user) {
+      setUnreadCount(0);
+      return;
+    }
+
+    let isActive = true;
+    let eventSource: EventSource | null = null;
+
+    const fetchUnreadCount = async () => {
+      try {
+        const result = await notificationService.getUnreadCount();
+        if (isActive) {
+          setUnreadCount(result.unread_count);
+        }
+      } catch {
+        // Ignore transient network errors.
+      }
+    };
+
+    fetchUnreadCount();
+    const intervalId = window.setInterval(fetchUnreadCount, 30000);
+
+    const token = localStorage.getItem('token');
+    if (token) {
+      eventSource = notificationService.createEventSource();
+      eventSource.onmessage = (event) => {
+        if (!event.data) {
+          return;
+        }
+        try {
+          const payload = JSON.parse(event.data);
+          if (payload && typeof payload === 'object') {
+            addNotification(payload);
+          } else {
+            incrementUnreadCount();
+          }
+        } catch {
+          incrementUnreadCount();
+        }
+      };
+      eventSource.onerror = () => {
+        eventSource?.close();
+      };
+    }
+
+    return () => {
+      isActive = false;
+      window.clearInterval(intervalId);
+      eventSource?.close();
+    };
+  }, [addNotification, setUnreadCount, user]);
 
   const handleLogout = () => {
     logout();

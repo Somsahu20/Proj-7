@@ -11,6 +11,7 @@ interface NotificationState {
   markAsRead: (ids: string[]) => void;
   markAllAsRead: () => void;
   setUnreadCount: (count: number) => void;
+  incrementUnreadCount: () => void;
   setLoading: (loading: boolean) => void;
 }
 
@@ -42,6 +43,8 @@ export const useNotificationStore = create<NotificationState>((set) => ({
     })),
 
   setUnreadCount: (count) => set({ unreadCount: count }),
+  incrementUnreadCount: () =>
+    set((state) => ({ unreadCount: state.unreadCount + 1 })),
 
   setLoading: (isLoading) => set({ isLoading }),
 }));
