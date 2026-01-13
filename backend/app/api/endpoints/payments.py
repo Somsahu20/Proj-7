@@ -21,6 +21,40 @@ from app.schemas import (
 router = APIRouter(prefix="/payments", tags=["Payments"])
 
 
+def build_proof_response(p) -> PaymentProofResponse:
+    """Build PaymentProofResponse with explicit fields."""
+    return PaymentProofResponse(
+        id=p.id,
+        payment_id=p.payment_id,
+        file_url=p.file_url,
+        file_type=p.file_type,
+        file_size=p.file_size,
+        uploaded_at=p.uploaded_at
+    )
+
+
+def build_payment_response(payment) -> PaymentResponse:
+    """Build PaymentResponse with explicit fields."""
+    return PaymentResponse(
+        id=payment.id,
+        group_id=payment.group_id,
+        payer_id=payment.payer_id,
+        receiver_id=payment.receiver_id,
+        amount=payment.amount,
+        description=payment.description,
+        payment_method=payment.payment_method,
+        date=payment.date,
+        status=payment.status,
+        confirmed_at=payment.confirmed_at,
+        rejected_at=payment.rejected_at,
+        rejected_reason=payment.rejected_reason,
+        created_at=payment.created_at,
+        payer=UserResponse.model_validate(payment.payer) if payment.payer else None,
+        receiver=UserResponse.model_validate(payment.receiver) if payment.receiver else None,
+        proofs=[build_proof_response(p) for p in payment.proofs] if payment.proofs else []
+    )
+
+
 async def check_group_membership(db: AsyncSession, group_id: uuid.UUID, user_id: uuid.UUID):
     """Check if user is a member of the group."""
     result = await db.execute(
@@ -82,12 +116,7 @@ async def create_payment(
     )
     payment = result.scalar_one()
 
-    return PaymentResponse(
-        **payment.__dict__,
-        payer=UserResponse.model_validate(payment.payer),
-        receiver=UserResponse.model_validate(payment.receiver),
-        proofs=[PaymentProofResponse(**p.__dict__) for p in payment.proofs]
-    )
+    return build_payment_response(payment)
 
 
 @router.get("", response_model=PaymentListResponse)
@@ -133,15 +162,7 @@ async def list_payments(
     payments = result.scalars().all()
 
     return PaymentListResponse(
-        payments=[
-            PaymentResponse(
-                **p.__dict__,
-                payer=UserResponse.model_validate(p.payer),
-                receiver=UserResponse.model_validate(p.receiver),
-                proofs=[PaymentProofResponse(**pr.__dict__) for pr in p.proofs]
-            )
-            for p in payments
-        ],
+        payments=[build_payment_response(p) for p in payments],
         total=total,
         page=page,
         per_page=per_page
@@ -171,15 +192,7 @@ async def list_pending_payments(
     )
     payments = result.scalars().all()
 
-    return [
-        PaymentResponse(
-            **p.__dict__,
-            payer=UserResponse.model_validate(p.payer),
-            receiver=UserResponse.model_validate(p.receiver),
-            proofs=[PaymentProofResponse(**pr.__dict__) for pr in p.proofs]
-        )
-        for p in payments
-    ]
+    return [build_payment_response(p) for p in payments]
 
 
 @router.get("/{payment_id}", response_model=PaymentResponse)
@@ -210,12 +223,7 @@ async def get_payment(
     if payment.payer_id != current_user.id and payment.receiver_id != current_user.id:
         await check_group_membership(db, payment.group_id, current_user.id)
 
-    return PaymentResponse(
-        **payment.__dict__,
-        payer=UserResponse.model_validate(payment.payer),
-        receiver=UserResponse.model_validate(payment.receiver),
-        proofs=[PaymentProofResponse(**p.__dict__) for p in payment.proofs]
-    )
+    return build_payment_response(payment)
 
 
 @router.post("/{payment_id}/confirm", response_model=PaymentResponse)
@@ -259,12 +267,7 @@ async def confirm_payment(
     await db.commit()
     await db.refresh(payment)
 
-    return PaymentResponse(
-        **payment.__dict__,
-        payer=UserResponse.model_validate(payment.payer),
-        receiver=UserResponse.model_validate(payment.receiver),
-        proofs=[PaymentProofResponse(**p.__dict__) for p in payment.proofs]
-    )
+    return build_payment_response(payment)
 
 
 @router.post("/{payment_id}/reject", response_model=PaymentResponse)
@@ -310,12 +313,7 @@ async def reject_payment(
     await db.commit()
     await db.refresh(payment)
 
-    return PaymentResponse(
-        **payment.__dict__,
-        payer=UserResponse.model_validate(payment.payer),
-        receiver=UserResponse.model_validate(payment.receiver),
-        proofs=[PaymentProofResponse(**p.__dict__) for p in payment.proofs]
-    )
+    return build_payment_response(payment)
 
 
 @router.post("/{payment_id}/cancel", response_model=PaymentResponse)
@@ -361,12 +359,7 @@ async def cancel_payment(
     await db.commit()
     await db.refresh(payment)
 
-    return PaymentResponse(
-        **payment.__dict__,
-        payer=UserResponse.model_validate(payment.payer),
-        receiver=UserResponse.model_validate(payment.receiver),
-        proofs=[PaymentProofResponse(**p.__dict__) for p in payment.proofs]
-    )
+    return build_payment_response(payment)
 
 
 @router.post("/{payment_id}/proof", response_model=PaymentProofResponse)

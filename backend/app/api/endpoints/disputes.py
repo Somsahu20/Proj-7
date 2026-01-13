@@ -17,6 +17,45 @@ from app.schemas import (
 router = APIRouter(prefix="/disputes", tags=["Disputes"])
 
 
+def build_vote_response(v) -> DisputeVoteResponse:
+    """Build DisputeVoteResponse with explicit fields."""
+    return DisputeVoteResponse(
+        id=v.id,
+        dispute_id=v.dispute_id,
+        user_id=v.user_id,
+        vote=v.vote,
+        comment=v.comment,
+        created_at=v.created_at
+    )
+
+
+def build_dispute_response(dispute, votes=None) -> DisputeResponse:
+    """Build DisputeResponse with explicit fields."""
+    vote_list = votes if votes is not None else (dispute.votes if hasattr(dispute, 'votes') and dispute.votes else [])
+    return DisputeResponse(
+        id=dispute.id,
+        expense_id=dispute.expense_id,
+        payment_id=dispute.payment_id,
+        opened_by_id=dispute.opened_by_id,
+        reason=dispute.reason,
+        description=dispute.description,
+        evidence_urls=dispute.evidence_urls or [],
+        status=dispute.status,
+        resolution=dispute.resolution,
+        resolved_by_id=dispute.resolved_by_id,
+        resolved_at=dispute.resolved_at,
+        resolution_notes=dispute.resolution_notes,
+        voting_ends_at=dispute.voting_ends_at if hasattr(dispute, 'voting_ends_at') else None,
+        created_at=dispute.created_at,
+        votes=[build_vote_response(v) for v in vote_list],
+        vote_summary={
+            "approve": len([v for v in vote_list if v.vote == "approve"]),
+            "reject": len([v for v in vote_list if v.vote == "reject"]),
+            "abstain": len([v for v in vote_list if v.vote == "abstain"]),
+        } if vote_list else None
+    )
+
+
 @router.post("", response_model=DisputeResponse, status_code=status.HTTP_201_CREATED)
 async def create_dispute(
     data: DisputeCreate,
@@ -88,13 +127,14 @@ async def create_dispute(
     await db.commit()
     await db.refresh(dispute)
 
-    return DisputeResponse(**dispute.__dict__, votes=[])
+    return build_dispute_response(dispute, votes=[])
 
 
 @router.get("", response_model=List[DisputeResponse])
 async def list_disputes(
     expense_id: Optional[uuid.UUID] = None,
     payment_id: Optional[uuid.UUID] = None,
+    group_id: Optional[uuid.UUID] = None,
     status_filter: Optional[str] = Query(None, alias="status"),
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
@@ -111,6 +151,12 @@ async def list_disputes(
     )
     group_ids = [row[0] for row in memberships_result.all()]
 
+    if group_id and group_id not in group_ids:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not a member of this group"
+        )
+
     # Build query
     query = select(Dispute).options(selectinload(Dispute.votes))
 
@@ -119,9 +165,13 @@ async def list_disputes(
     elif payment_id:
         query = query.where(Dispute.payment_id == payment_id)
     else:
-        # Filter by accessible groups
-        expense_subq = select(Expense.id).where(Expense.group_id.in_(group_ids))
-        payment_subq = select(Payment.id).where(Payment.group_id.in_(group_ids))
+        # Filter by accessible groups (optionally scoped to a single group)
+        if group_id:
+            expense_subq = select(Expense.id).where(Expense.group_id == group_id)
+            payment_subq = select(Payment.id).where(Payment.group_id == group_id)
+        else:
+            expense_subq = select(Expense.id).where(Expense.group_id.in_(group_ids))
+            payment_subq = select(Payment.id).where(Payment.group_id.in_(group_ids))
         query = query.where(
             (Dispute.expense_id.in_(expense_subq)) | (Dispute.payment_id.in_(payment_subq))
         )
@@ -133,18 +183,7 @@ async def list_disputes(
     result = await db.execute(query)
     disputes = result.scalars().all()
 
-    return [
-        DisputeResponse(
-            **d.__dict__,
-            votes=[DisputeVoteResponse(**v.__dict__) for v in d.votes],
-            vote_summary={
-                "approve": len([v for v in d.votes if v.vote == "approve"]),
-                "reject": len([v for v in d.votes if v.vote == "reject"]),
-                "abstain": len([v for v in d.votes if v.vote == "abstain"]),
-            }
-        )
-        for d in disputes
-    ]
+    return [build_dispute_response(d) for d in disputes]
 
 
 @router.get("/{dispute_id}", response_model=DisputeResponse)
@@ -167,15 +206,7 @@ async def get_dispute(
             detail="Dispute not found"
         )
 
-    return DisputeResponse(
-        **dispute.__dict__,
-        votes=[DisputeVoteResponse(**v.__dict__) for v in dispute.votes],
-        vote_summary={
-            "approve": len([v for v in dispute.votes if v.vote == "approve"]),
-            "reject": len([v for v in dispute.votes if v.vote == "reject"]),
-            "abstain": len([v for v in dispute.votes if v.vote == "abstain"]),
-        }
-    )
+    return build_dispute_response(dispute)
 
 
 @router.post("/{dispute_id}/vote", response_model=DisputeVoteResponse)
@@ -298,15 +329,24 @@ async def resolve_dispute(
     dispute.resolved_at = datetime.utcnow()
     dispute.resolution_notes = data.resolution_notes
 
+    if dispute.payment_id:
+        payment_result = await db.execute(
+            select(Payment).where(Payment.id == dispute.payment_id)
+        )
+        payment = payment_result.scalar_one_or_none()
+        if payment:
+            if data.resolution == "upheld":
+                payment.status = "rejected"
+                payment.rejected_at = datetime.utcnow()
+                payment.rejected_reason = "Dispute upheld"
+                payment.confirmed_at = None
+            else:
+                payment.status = "confirmed"
+                payment.confirmed_at = datetime.utcnow()
+                payment.rejected_at = None
+                payment.rejected_reason = None
+
     await db.commit()
     await db.refresh(dispute)
 
-    return DisputeResponse(
-        **dispute.__dict__,
-        votes=[DisputeVoteResponse(**v.__dict__) for v in dispute.votes],
-        vote_summary={
-            "approve": len([v for v in dispute.votes if v.vote == "approve"]),
-            "reject": len([v for v in dispute.votes if v.vote == "reject"]),
-            "abstain": len([v for v in dispute.votes if v.vote == "abstain"]),
-        }
-    )
+    return build_dispute_response(dispute)

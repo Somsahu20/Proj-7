@@ -1,13 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, and_, or_
+from sqlalchemy import select, and_, or_, func
 from sqlalchemy.orm import selectinload
 from datetime import datetime
 import uuid as uuid_module
 
 from app.db.database import get_db
 from app.api.deps import get_current_user
-from app.models import User, Friendship, Group, Membership
+from app.models import User, Friendship, Group, Membership, Expense, ExpenseSplit, Payment
 from app.schemas.friendship import (
     FriendRequestCreate, FriendshipResponse, FriendResponse, FriendListResponse
 )
@@ -108,6 +108,65 @@ async def get_friends(
     friends = []
     for f in accepted_friendships:
         friend = f.addressee if f.requester_id == current_user.id else f.requester
+
+        # Calculate balance from friend_group expenses
+        balance = 0.0
+        if f.friend_group_id:
+            # What current user paid (expenses)
+            paid_result = await db.execute(
+                select(func.coalesce(func.sum(Expense.amount), 0)).where(
+                    and_(
+                        Expense.group_id == f.friend_group_id,
+                        Expense.payer_id == current_user.id,
+                        Expense.is_deleted == False
+                    )
+                )
+            )
+            paid = float(paid_result.scalar() or 0)
+
+            # What current user owes (from splits)
+            owed_result = await db.execute(
+                select(func.coalesce(func.sum(ExpenseSplit.amount), 0))
+                .select_from(ExpenseSplit)
+                .join(Expense)
+                .where(
+                    and_(
+                        Expense.group_id == f.friend_group_id,
+                        ExpenseSplit.user_id == current_user.id,
+                        Expense.is_deleted == False
+                    )
+                )
+            )
+            owed = float(owed_result.scalar() or 0)
+
+            # Include confirmed payments - payments made by current user
+            payments_made_result = await db.execute(
+                select(func.coalesce(func.sum(Payment.amount), 0)).where(
+                    and_(
+                        Payment.group_id == f.friend_group_id,
+                        Payment.payer_id == current_user.id,
+                        Payment.status == "confirmed"
+                    )
+                )
+            )
+            payments_made = float(payments_made_result.scalar() or 0)
+
+            # Include confirmed payments - payments received by current user
+            payments_received_result = await db.execute(
+                select(func.coalesce(func.sum(Payment.amount), 0)).where(
+                    and_(
+                        Payment.group_id == f.friend_group_id,
+                        Payment.receiver_id == current_user.id,
+                        Payment.status == "confirmed"
+                    )
+                )
+            )
+            payments_received = float(payments_received_result.scalar() or 0)
+
+            # Balance = (what I paid + what I paid back) - (what I owe + what was paid to me)
+            # Positive = friend owes me, Negative = I owe friend
+            balance = (paid + payments_made) - (owed + payments_received)
+
         friends.append(FriendResponse(
             id=friend.id,
             email=friend.email,
@@ -115,7 +174,7 @@ async def get_friends(
             profile_picture=friend.profile_picture,
             friendship_id=f.id,
             friend_group_id=f.friend_group_id,
-            balance=0  # TODO: Calculate balance from friend_group expenses
+            balance=balance
         ))
 
     # Get pending sent
@@ -266,7 +325,7 @@ async def remove_friend(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
 ):
-    """Remove a friend (unfriend)."""
+    """Remove a friend (unfriend). Only allowed if balance is settled."""
     result = await db.execute(
         select(Friendship).where(
             and_(
@@ -286,6 +345,66 @@ async def remove_friend(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Friendship not found"
         )
+
+    # Check if balance is settled before allowing deletion
+    if friendship.friend_group_id:
+        # Calculate balance from expenses
+        paid_result = await db.execute(
+            select(func.coalesce(func.sum(Expense.amount), 0)).where(
+                and_(
+                    Expense.group_id == friendship.friend_group_id,
+                    Expense.payer_id == current_user.id,
+                    Expense.is_deleted == False
+                )
+            )
+        )
+        paid = float(paid_result.scalar() or 0)
+
+        owed_result = await db.execute(
+            select(func.coalesce(func.sum(ExpenseSplit.amount), 0))
+            .select_from(ExpenseSplit)
+            .join(Expense)
+            .where(
+                and_(
+                    Expense.group_id == friendship.friend_group_id,
+                    ExpenseSplit.user_id == current_user.id,
+                    Expense.is_deleted == False
+                )
+            )
+        )
+        owed = float(owed_result.scalar() or 0)
+
+        # Include confirmed payments
+        payments_made_result = await db.execute(
+            select(func.coalesce(func.sum(Payment.amount), 0)).where(
+                and_(
+                    Payment.group_id == friendship.friend_group_id,
+                    Payment.payer_id == current_user.id,
+                    Payment.status == "confirmed"
+                )
+            )
+        )
+        payments_made = float(payments_made_result.scalar() or 0)
+
+        payments_received_result = await db.execute(
+            select(func.coalesce(func.sum(Payment.amount), 0)).where(
+                and_(
+                    Payment.group_id == friendship.friend_group_id,
+                    Payment.receiver_id == current_user.id,
+                    Payment.status == "confirmed"
+                )
+            )
+        )
+        payments_received = float(payments_received_result.scalar() or 0)
+
+        balance = (paid + payments_made) - (owed + payments_received)
+
+        # If balance is not zero (within a small tolerance), prevent deletion
+        if abs(balance) > 0.01:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Cannot remove friend with unsettled balance. Please settle up first. Balance: {balance:.2f}"
+            )
 
     # Keep the friend group for expense history, just delete the friendship
     await db.delete(friendship)
@@ -321,4 +440,4 @@ async def get_friend_group(
             detail="Friendship not found or no group exists"
         )
 
-    return {"friend_group_id": str(friendship.friend_group_id)}
+    return {"group_id": str(friendship.friend_group_id)}

@@ -199,6 +199,16 @@ export interface Invitation {
   created_at: string;
   group_name?: string;
   invited_by_name?: string;
+  group?: {
+    id: string;
+    name: string;
+    image_url?: string;
+  };
+  invited_by?: {
+    id: string;
+    name: string;
+    email: string;
+  };
 }
 
 export interface Friend {
@@ -226,4 +236,36 @@ export interface FriendList {
   friends: Friend[];
   pending_sent: Friendship[];
   pending_received: Friendship[];
+}
+
+export interface DisputeVote {
+  id: string;
+  dispute_id: string;
+  user_id: string;
+  vote: 'approve' | 'reject' | 'abstain';
+  comment?: string;
+  created_at: string;
+}
+
+export interface Dispute {
+  id: string;
+  expense_id?: string;
+  payment_id?: string;
+  opened_by_id: string;
+  reason: string;
+  description: string;
+  evidence_urls: string[];
+  status: 'open' | 'voting' | 'resolved';
+  resolution?: 'upheld' | 'dismissed' | 'modified';
+  resolved_by_id?: string;
+  resolved_at?: string;
+  resolution_notes?: string;
+  voting_ends_at?: string;
+  created_at: string;
+  votes: DisputeVote[];
+  vote_summary?: {
+    approve: number;
+    reject: number;
+    abstain: number;
+  } | null;
 }

@@ -22,6 +22,45 @@ from app.models import ExpenseTemplate
 router = APIRouter(prefix="/expenses", tags=["Expenses"])
 
 
+def build_split_response(s) -> SplitResponse:
+    """Build SplitResponse with explicit fields to avoid __dict__ issues."""
+    return SplitResponse(
+        id=s.id,
+        expense_id=s.expense_id,
+        user_id=s.user_id,
+        amount=s.amount,
+        shares=s.shares,
+        percentage=s.percentage,
+        is_settled=s.is_settled,
+        user=UserResponse.model_validate(s.user) if s.user else None
+    )
+
+
+def build_expense_response(expense, comment_count: int = 0, reaction_count: int = 0) -> ExpenseResponse:
+    """Build ExpenseResponse with explicit fields to avoid __dict__ issues."""
+    return ExpenseResponse(
+        id=expense.id,
+        group_id=expense.group_id,
+        payer_id=expense.payer_id,
+        description=expense.description,
+        amount=expense.amount,
+        date=expense.date,
+        category=expense.category,
+        notes=expense.notes,
+        split_type=expense.split_type,
+        receipt_url=expense.receipt_url,
+        created_by_id=expense.created_by_id,
+        is_deleted=expense.is_deleted,
+        approval_status=expense.approval_status,
+        created_at=expense.created_at,
+        updated_at=expense.updated_at,
+        payer=UserResponse.model_validate(expense.payer) if expense.payer else None,
+        splits=[build_split_response(s) for s in expense.splits],
+        comment_count=comment_count,
+        reaction_count=reaction_count
+    )
+
+
 async def check_group_membership(db: AsyncSession, group_id: uuid.UUID, user_id: uuid.UUID) -> Membership:
     """Check if user is a member of the group."""
     result = await db.execute(
@@ -159,14 +198,7 @@ async def create_expense(
     )
     expense = result.scalar_one()
 
-    return ExpenseResponse(
-        **expense.__dict__,
-        payer=UserResponse.model_validate(expense.payer),
-        splits=[
-            SplitResponse(**s.__dict__, user=UserResponse.model_validate(s.user))
-            for s in expense.splits
-        ]
-    )
+    return build_expense_response(expense)
 
 
 @router.get("", response_model=ExpenseListResponse)
@@ -221,17 +253,7 @@ async def list_expenses(
     expenses = result.scalars().all()
 
     return ExpenseListResponse(
-        expenses=[
-            ExpenseResponse(
-                **e.__dict__,
-                payer=UserResponse.model_validate(e.payer),
-                splits=[
-                    SplitResponse(**s.__dict__, user=UserResponse.model_validate(s.user))
-                    for s in e.splits
-                ]
-            )
-            for e in expenses
-        ],
+        expenses=[build_expense_response(e) for e in expenses],
         total=total,
         page=page,
         per_page=per_page,
@@ -266,13 +288,8 @@ async def get_expense(
 
     await check_group_membership(db, expense.group_id, current_user.id)
 
-    return ExpenseResponse(
-        **expense.__dict__,
-        payer=UserResponse.model_validate(expense.payer),
-        splits=[
-            SplitResponse(**s.__dict__, user=UserResponse.model_validate(s.user))
-            for s in expense.splits
-        ],
+    return build_expense_response(
+        expense,
         comment_count=len([c for c in expense.comments if not c.is_deleted]),
         reaction_count=len(expense.reactions)
     )
@@ -368,14 +385,7 @@ async def update_expense(
     )
     expense = result.scalar_one()
 
-    return ExpenseResponse(
-        **expense.__dict__,
-        payer=UserResponse.model_validate(expense.payer),
-        splits=[
-            SplitResponse(**s.__dict__, user=UserResponse.model_validate(s.user))
-            for s in expense.splits
-        ]
-    )
+    return build_expense_response(expense)
 
 
 @router.delete("/{expense_id}")
@@ -483,14 +493,7 @@ async def upload_receipt(
     await db.commit()
     await db.refresh(expense)
 
-    return ExpenseResponse(
-        **expense.__dict__,
-        payer=UserResponse.model_validate(expense.payer),
-        splits=[
-            SplitResponse(**s.__dict__, user=UserResponse.model_validate(s.user))
-            for s in expense.splits
-        ]
-    )
+    return build_expense_response(expense)
 
 
 # ==================== TEMPLATES ====================

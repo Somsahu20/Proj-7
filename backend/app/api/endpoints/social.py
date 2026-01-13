@@ -18,6 +18,50 @@ from app.schemas import (
 router = APIRouter(tags=["Social"])
 
 
+def build_comment_response_helper(comment, user=None, replies=None) -> CommentResponse:
+    """Build CommentResponse with explicit fields."""
+    return CommentResponse(
+        id=comment.id,
+        expense_id=comment.expense_id,
+        user_id=comment.user_id,
+        parent_id=comment.parent_id,
+        content=comment.content,
+        mentions=[uuid.UUID(m) for m in comment.mentions] if comment.mentions else [],
+        is_deleted=comment.is_deleted,
+        created_at=comment.created_at,
+        updated_at=comment.updated_at,
+        user=user if user else (UserResponse.model_validate(comment.user) if hasattr(comment, 'user') and comment.user else None),
+        replies=replies if replies is not None else []
+    )
+
+
+def build_reaction_response(reaction, user=None) -> ReactionResponse:
+    """Build ReactionResponse with explicit fields."""
+    return ReactionResponse(
+        id=reaction.id,
+        expense_id=reaction.expense_id,
+        user_id=reaction.user_id,
+        emoji=reaction.emoji,
+        created_at=reaction.created_at,
+        user=user if user else (UserResponse.model_validate(reaction.user) if hasattr(reaction, 'user') and reaction.user else None)
+    )
+
+
+def build_activity_response(activity) -> ActivityResponse:
+    """Build ActivityResponse with explicit fields."""
+    return ActivityResponse(
+        id=activity.id,
+        group_id=activity.group_id,
+        user_id=activity.user_id,
+        action=activity.action,
+        entity_type=activity.entity_type,
+        entity_id=activity.entity_id,
+        data=activity.data or {},
+        created_at=activity.created_at,
+        user=UserResponse.model_validate(activity.user) if activity.user else None
+    )
+
+
 # ==================== COMMENTS ====================
 comments_router = APIRouter(prefix="/expenses/{expense_id}/comments", tags=["Comments"])
 
@@ -94,11 +138,7 @@ async def create_comment(
     await db.commit()
     await db.refresh(comment)
 
-    return CommentResponse(
-        **comment.__dict__,
-        user=UserResponse.model_validate(current_user),
-        mentions=[uuid.UUID(m) for m in comment.mentions] if comment.mentions else []
-    )
+    return build_comment_response_helper(comment, user=UserResponse.model_validate(current_user))
 
 
 @comments_router.get("", response_model=List[CommentResponse])
@@ -184,11 +224,7 @@ async def update_comment(
     await db.commit()
     await db.refresh(comment)
 
-    return CommentResponse(
-        **comment.__dict__,
-        user=UserResponse.model_validate(comment.user),
-        mentions=[uuid.UUID(m) for m in comment.mentions] if comment.mentions else []
-    )
+    return build_comment_response_helper(comment)
 
 
 @comments_router.delete("/{comment_id}")
@@ -270,10 +306,7 @@ async def add_reaction(
     await db.commit()
     await db.refresh(reaction)
 
-    return ReactionResponse(
-        **reaction.__dict__,
-        user=UserResponse.model_validate(current_user)
-    )
+    return build_reaction_response(reaction, user=UserResponse.model_validate(current_user))
 
 
 @reactions_router.get("", response_model=List[ReactionSummary])
@@ -389,13 +422,7 @@ async def list_group_activity(
     activities = result.scalars().all()
 
     return ActivityListResponse(
-        activities=[
-            ActivityResponse(
-                **a.__dict__,
-                user=UserResponse.model_validate(a.user) if a.user else None
-            )
-            for a in activities
-        ],
+        activities=[build_activity_response(a) for a in activities],
         total=total,
         page=page,
         per_page=per_page

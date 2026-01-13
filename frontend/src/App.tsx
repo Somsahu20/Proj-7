@@ -10,6 +10,7 @@ import { RegisterPage } from '@/pages/RegisterPage';
 import { DashboardPage } from '@/pages/DashboardPage';
 import { GroupsPage } from '@/pages/GroupsPage';
 import { GroupDetailPage } from '@/pages/GroupDetailPage';
+import { GroupSettingsPage } from '@/pages/GroupSettingsPage';
 import { ExpenseFormPage } from '@/pages/ExpenseFormPage';
 import { PaymentsPage } from '@/pages/PaymentsPage';
 import { PaymentFormPage } from '@/pages/PaymentFormPage';
@@ -18,6 +19,7 @@ import { NotificationsPage } from '@/pages/NotificationsPage';
 import { ProfilePage } from '@/pages/ProfilePage';
 import { InvitationsPage } from '@/pages/InvitationsPage';
 import { FriendsPage } from '@/pages/FriendsPage';
+import { ExpenseDetailPage } from '@/pages/ExpenseDetailPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -67,7 +69,9 @@ function App() {
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/groups" element={<GroupsPage />} />
             <Route path="/groups/:groupId" element={<GroupDetailPage />} />
+            <Route path="/groups/:groupId/settings" element={<GroupSettingsPage />} />
             <Route path="/groups/:groupId/expenses/new" element={<ExpenseFormPage />} />
+            <Route path="/expenses/:expenseId" element={<ExpenseDetailPage />} />
             <Route path="/expenses" element={<Navigate to="/dashboard" replace />} />
             <Route path="/payments" element={<PaymentsPage />} />
             <Route path="/payments/new" element={<PaymentFormPage />} />

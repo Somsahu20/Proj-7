@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from app.api.endpoints import auth, users, groups, expenses, payments, balances, notifications, social, disputes, friends
+from app.api.endpoints import auth, users, groups, expenses, payments, balances, notifications, social, disputes, friends, analytics
 
 api_router = APIRouter()
 
@@ -14,3 +14,4 @@ api_router.include_router(notifications.router)
 api_router.include_router(social.router)
 api_router.include_router(disputes.router)
 api_router.include_router(friends.router)
+api_router.include_router(analytics.router)

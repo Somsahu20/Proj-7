@@ -3,7 +3,7 @@ from app.models.models import (
     Payment, PaymentProof, Notification, Comment, Reaction,
     ActivityLog, Dispute, DisputeVote, ExpenseTemplate,
     MembershipRole, SplitType, PaymentStatus, InvitationStatus,
-    DisputeStatus, ApprovalStatus
+    DisputeStatus, ApprovalStatus, Friendship, FriendshipStatus
 )
 
 __all__ = [
@@ -11,5 +11,5 @@ __all__ = [
     "Payment", "PaymentProof", "Notification", "Comment", "Reaction",
     "ActivityLog", "Dispute", "DisputeVote", "ExpenseTemplate",
     "MembershipRole", "SplitType", "PaymentStatus", "InvitationStatus",
-    "DisputeStatus", "ApprovalStatus"
+    "DisputeStatus", "ApprovalStatus", "Friendship", "FriendshipStatus"
 ]

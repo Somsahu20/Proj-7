@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { groupService } from '@/services/groups';
 import { expenseService } from '@/services/expenses';
@@ -13,14 +13,31 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { formatCurrency, formatDate, getInitials } from '@/lib/utils';
-import { Plus, Users, Receipt, CreditCard, Settings, ArrowLeft, Send, Loader2, TrendingUp, TrendingDown } from 'lucide-react';
+import { Plus, Users, Receipt, CreditCard, Settings, ArrowLeft, Send, Loader2, TrendingUp, TrendingDown, Gavel, BarChart3 } from 'lucide-react';
+import { DisputesPanel } from '@/pages/DisputesPage';
+import { GroupAnalyticsPanel } from '@/components/analytics';
 
 export function GroupDetailPage() {
   const { groupId } = useParams<{ groupId: string }>();
+  const location = useLocation();
   const { user } = useAuthStore();
   const queryClient = useQueryClient();
   const [inviteEmail, setInviteEmail] = useState('');
   const [inviteDialogOpen, setInviteDialogOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState('expenses');
+
+  useEffect(() => {
+    const state = location.state as
+      | { tab?: string; openCreate?: boolean; targetType?: 'expense' | 'payment'; targetId?: string }
+      | null;
+    if (state?.tab) {
+      setActiveTab(state.tab);
+      return;
+    }
+    if (state?.openCreate) {
+      setActiveTab('disputes');
+    }
+  }, [location.state]);
 
   const { data: group, isLoading: groupLoading } = useQuery({
     queryKey: ['group', groupId],
@@ -150,7 +167,7 @@ export function GroupDetailPage() {
       </div>
 
       {/* Tabs */}
-      <Tabs defaultValue="expenses" className="space-y-4">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
         <TabsList>
           <TabsTrigger value="expenses">
             <Receipt className="mr-2 h-4 w-4" />
@@ -163,6 +180,14 @@ export function GroupDetailPage() {
           <TabsTrigger value="members">
             <Users className="mr-2 h-4 w-4" />
             Members
+          </TabsTrigger>
+          <TabsTrigger value="disputes">
+            <Gavel className="mr-2 h-4 w-4" />
+            Disputes
+          </TabsTrigger>
+          <TabsTrigger value="analytics">
+            <BarChart3 className="mr-2 h-4 w-4" />
+            Analytics
           </TabsTrigger>
         </TabsList>
 
@@ -351,6 +376,20 @@ export function GroupDetailPage() {
               </div>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        {/* Disputes Tab */}
+        <TabsContent value="disputes" className="space-y-4">
+          <DisputesPanel
+            groupId={groupId}
+            hideHeader
+            prefill={location.state as { openCreate?: boolean; targetType?: 'expense' | 'payment'; targetId?: string } | null}
+          />
+        </TabsContent>
+
+        {/* Analytics Tab */}
+        <TabsContent value="analytics" className="space-y-4">
+          <GroupAnalyticsPanel groupId={groupId!} />
         </TabsContent>
       </Tabs>
     </div>

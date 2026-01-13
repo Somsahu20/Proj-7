@@ -10,7 +10,8 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { formatDate, getInitials, formatCurrency } from '@/lib/utils';
-import { UserPlus, Users, Check, X, Loader2, Trash2, Receipt } from 'lucide-react';
+import { UserPlus, Users, Check, X, Loader2, Trash2, Receipt, Banknote, BarChart3 } from 'lucide-react';
+import { FriendsAnalyticsPanel } from '@/components/analytics';
 
 export function FriendsPage() {
   const navigate = useNavigate();
@@ -64,6 +65,24 @@ export function FriendsPage() {
       navigate(`/groups/${group_id}`);
     } catch (error) {
       console.error('Failed to get friend group:', error);
+    }
+  };
+
+  const handleSettle = async (friendId: string, balance: number) => {
+    try {
+      const { group_id } = await friendsService.getFriendGroup(friendId);
+      // Navigate to payment form with pre-filled data
+      // If balance > 0, friend owes user, so friend pays user
+      // If balance < 0, user owes friend, so user pays friend
+      if (balance < 0) {
+        // User owes friend, navigate to create a payment
+        navigate(`/payments/new?group=${group_id}&amount=${Math.abs(balance)}`);
+      } else {
+        // Friend owes user, navigate to payment page
+        navigate(`/payments/new?group=${group_id}&amount=${balance}`);
+      }
+    } catch (error) {
+      console.error('Failed to get friend group for settle:', error);
     }
   };
 
@@ -133,6 +152,10 @@ export function FriendsPage() {
           <TabsTrigger value="sent">
             Sent ({pendingSent.length})
           </TabsTrigger>
+          <TabsTrigger value="analytics">
+            <BarChart3 className="mr-2 h-4 w-4" />
+            Analytics
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="friends" className="mt-4">
@@ -181,6 +204,16 @@ export function FriendsPage() {
                       </p>
                     </div>
                     <div className="flex gap-2">
+                      {friend.balance !== 0 && (
+                        <Button
+                          variant="default"
+                          size="sm"
+                          onClick={() => handleSettle(friend.id, friend.balance)}
+                        >
+                          <Banknote className="mr-1 h-4 w-4" />
+                          Settle
+                        </Button>
+                      )}
                       <Button
                         variant="outline"
                         size="sm"
@@ -301,6 +334,10 @@ export function FriendsPage() {
               ))}
             </div>
           )}
+        </TabsContent>
+
+        <TabsContent value="analytics" className="mt-4">
+          <FriendsAnalyticsPanel />
         </TabsContent>
       </Tabs>
     </div>

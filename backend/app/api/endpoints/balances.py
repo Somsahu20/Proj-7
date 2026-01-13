@@ -335,15 +335,21 @@ async def get_settlement_suggestions(
             detail="Not a member of this group"
         )
 
-    # Get all balances
+    # Get all balances for simplification
     all_balances = await get_all_group_debts(db, group_id)
 
-    # Count original transactions (before simplification)
-    # This is the count of non-zero balance pairs
-    original_count = sum(1 for b in all_balances.values() if abs(b) > Decimal("0.01"))
+    # Count original transactions for current user only
+    user_balances = await get_group_balances(db, group_id, current_user.id)
+    original_count = sum(1 for b in user_balances.values() if abs(b) > Decimal("0.01"))
 
     # Simplify
     simplified = simplify_debts(all_balances)
+
+    # Only return suggestions involving the current user
+    simplified = [
+        s for s in simplified
+        if s["from_user_id"] == current_user.id or s["to_user_id"] == current_user.id
+    ]
 
     # Get user names
     suggestions = []

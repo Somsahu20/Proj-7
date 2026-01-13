@@ -40,6 +40,10 @@ from app.schemas.dispute import (
 from app.schemas.friendship import (
     FriendRequestCreate, FriendshipResponse, FriendResponse, FriendListResponse
 )
+from app.schemas.analytics import (
+    CategorySpending, SpendingDataPoint, MemberContribution, FriendSpending,
+    GroupAnalyticsResponse, FriendsAnalyticsResponse
+)
 
 __all__ = [
     # User
@@ -75,4 +79,7 @@ __all__ = [
     "DisputeVoteResponse", "DisputeResolve",
     # Friendship
     "FriendRequestCreate", "FriendshipResponse", "FriendResponse", "FriendListResponse",
+    # Analytics
+    "CategorySpending", "SpendingDataPoint", "MemberContribution", "FriendSpending",
+    "GroupAnalyticsResponse", "FriendsAnalyticsResponse",
 ]

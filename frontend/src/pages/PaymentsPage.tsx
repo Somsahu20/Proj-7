@@ -315,6 +315,20 @@ function PaymentList({
                   {getStatusIcon(payment.status)}
                   {payment.status}
                 </span>
+                {payment.status === 'pending' ? (
+                  <Button size="sm" variant="outline" disabled>
+                    Dispute
+                  </Button>
+                ) : (
+                  <Button size="sm" variant="outline" asChild>
+                    <Link
+                      to={`/groups/${payment.group_id}`}
+                      state={{ openCreate: true, targetType: 'payment', targetId: payment.id, tab: 'disputes' }}
+                    >
+                      Dispute
+                    </Link>
+                  </Button>
+                )}
               </div>
             </CardContent>
           </Card>

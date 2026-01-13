@@ -41,7 +41,7 @@ async def get_current_user(
             detail="User not found",
         )
 
-    if not user.is_active:
+    if not getattr(user, "is_active", False):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="User account is deactivated",
@@ -70,4 +70,4 @@ async def get_current_user_optional(
     result = await db.execute(select(User).where(User.id == UUID(user_id)))
     user = result.scalar_one_or_none()
 
-    return user if user and user.is_active else None
+    return user if user and getattr(user, "is_active", False) else None

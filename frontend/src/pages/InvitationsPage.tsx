@@ -70,13 +70,13 @@ export function InvitationsPage() {
                 <Avatar className="h-12 w-12">
                   <AvatarImage src={invitation.group?.image_url || ''} />
                   <AvatarFallback>
-                    {getInitials(invitation.group?.name || 'Group')}
+                    {getInitials(invitation.group?.name || invitation.group_name || 'Group')}
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex-1">
-                  <CardTitle className="text-lg">{invitation.group?.name || 'Unknown Group'}</CardTitle>
+                  <CardTitle className="text-lg">{invitation.group?.name || invitation.group_name || 'Unknown Group'}</CardTitle>
                   <CardDescription>
-                    Invited by {invitation.invited_by?.name || invitation.invited_by?.email || 'Someone'} on {formatDate(invitation.created_at)}
+                    Invited by {invitation.invited_by?.name || invitation.invited_by_name || 'Someone'} on {formatDate(invitation.created_at)}
                   </CardDescription>
                 </div>
                 <div className="flex gap-2">

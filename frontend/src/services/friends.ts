@@ -1,5 +1,5 @@
 import api from './api';
-import { Friend, Friendship, FriendList } from '../types';
+import { Friendship, FriendList } from '../types';
 
 export const friendsService = {
   async getFriends(): Promise<FriendList> {

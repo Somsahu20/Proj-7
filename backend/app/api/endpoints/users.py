@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, and_
 from sqlalchemy.orm import selectinload
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import List
 import os
 import uuid
@@ -178,7 +178,7 @@ async def get_my_invitations(
             and_(
                 Invitation.email == current_user.email,
                 Invitation.status == "pending",
-                Invitation.expires_at > datetime.utcnow()
+                Invitation.expires_at > datetime.now(timezone.utc)
             )
         )
         .order_by(Invitation.created_at.desc())
@@ -224,7 +224,7 @@ async def accept_invitation_by_id(
             detail="Invitation not found"
         )
 
-    if invitation.expires_at < datetime.utcnow():
+    if invitation.expires_at < datetime.now(timezone.utc):
         invitation.status = "expired"
         await db.commit()
         raise HTTPException(

@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func, and_
 from sqlalchemy.orm import selectinload
 from typing import List, Optional
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import os
 import uuid
 import secrets
@@ -20,6 +20,49 @@ from app.schemas import (
 )
 
 router = APIRouter(prefix="/groups", tags=["Groups"])
+
+
+def build_group_response(group, member_count: int = 0) -> GroupResponse:
+    """Build GroupResponse with explicit fields."""
+    return GroupResponse(
+        id=group.id,
+        name=group.name,
+        description=group.description,
+        category=group.category,
+        image_url=group.image_url,
+        created_by_id=group.created_by_id,
+        is_archived=group.is_archived,
+        settings=group.settings or {},
+        created_at=group.created_at,
+        member_count=member_count
+    )
+
+
+def build_member_response(m) -> MemberResponse:
+    """Build MemberResponse with explicit fields."""
+    return MemberResponse(
+        id=m.id,
+        user_id=m.user_id,
+        group_id=m.group_id,
+        role=m.role,
+        joined_at=m.joined_at,
+        is_active=m.is_active,
+        user=UserResponse.model_validate(m.user) if m.user else None
+    )
+
+
+def build_invitation_response(invitation, group_name: str = None, invited_by_name: str = None) -> InvitationResponse:
+    """Build InvitationResponse with explicit fields."""
+    return InvitationResponse(
+        id=invitation.id,
+        group_id=invitation.group_id,
+        email=invitation.email,
+        status=invitation.status,
+        expires_at=invitation.expires_at,
+        created_at=invitation.created_at,
+        group_name=group_name,
+        invited_by_name=invited_by_name
+    )
 
 
 @router.post("", response_model=GroupResponse, status_code=status.HTTP_201_CREATED)
@@ -48,10 +91,7 @@ async def create_group(
     await db.commit()
     await db.refresh(group)
 
-    return GroupResponse(
-        **group.__dict__,
-        member_count=1
-    )
+    return build_group_response(group, member_count=1)
 
 
 @router.get("", response_model=List[GroupResponse])
@@ -60,12 +100,25 @@ async def list_groups(
     db: AsyncSession = Depends(get_db)
 ):
     """List all groups for current user."""
+    # First, get the groups the user is a member of
+    user_groups_subq = (
+        select(Membership.group_id)
+        .where(
+            and_(
+                Membership.user_id == current_user.id,
+                Membership.is_active == True
+            )
+        )
+        .scalar_subquery()
+    )
+
+    # Then count all active members for each of those groups
     result = await db.execute(
         select(Group, func.count(Membership.id).label("member_count"))
         .join(Membership, Membership.group_id == Group.id)
         .where(
             and_(
-                Membership.user_id == current_user.id,
+                Group.id.in_(user_groups_subq),
                 Membership.is_active == True,
                 Group.is_deleted == False
             )
@@ -75,10 +128,7 @@ async def list_groups(
     )
     groups = result.all()
 
-    return [
-        GroupResponse(**group.__dict__, member_count=count)
-        for group, count in groups
-    ]
+    return [build_group_response(group, member_count=count) for group, count in groups]
 
 
 @router.get("/{group_id}", response_model=GroupDetailResponse)
@@ -174,7 +224,16 @@ async def get_group(
     your_balance = float(paid) - float(owed)
 
     return GroupDetailResponse(
-        **group.__dict__,
+        id=group.id,
+        name=group.name,
+        description=group.description,
+        category=group.category,
+        image_url=group.image_url,
+        created_by_id=group.created_by_id,
+        is_archived=group.is_archived,
+        settings=group.settings,
+        created_at=group.created_at,
+        member_count=len(members),
         creator=UserResponse.model_validate(group.creator),
         members=[MemberResponse(
             id=m.id,
@@ -185,7 +244,6 @@ async def get_group(
             is_active=m.is_active,
             user=UserResponse.model_validate(m.user)
         ) for m in members],
-        member_count=len(members),
         total_expenses=float(total_expenses),
         your_balance=your_balance
     )
@@ -375,10 +433,7 @@ async def list_members(
     )
     members = result.scalars().all()
 
-    return [
-        MemberResponse(**m.__dict__, user=UserResponse.model_validate(m.user))
-        for m in members
-    ]
+    return [build_member_response(m) for m in members]
 
 
 @router.patch("/{group_id}/members/{user_id}/role", response_model=MemberResponse)
@@ -431,7 +486,7 @@ async def update_member_role(
     await db.commit()
     await db.refresh(membership)
 
-    return MemberResponse(**membership.__dict__, user=UserResponse.model_validate(membership.user))
+    return build_member_response(membership)
 
 
 @router.delete("/{group_id}/members/{user_id}")
@@ -554,7 +609,7 @@ async def create_invitation(
         email=data.email,
         invited_by_id=current_user.id,
         token=secrets.token_urlsafe(32),
-        expires_at=datetime.utcnow() + timedelta(days=7),
+        expires_at=datetime.now(timezone.utc) + timedelta(days=7),
     )
     db.add(invitation)
     await db.commit()
@@ -562,11 +617,7 @@ async def create_invitation(
 
     # TODO: Send invitation email
 
-    return InvitationResponse(
-        **invitation.__dict__,
-        group_name=group.name,
-        invited_by_name=current_user.name
-    )
+    return build_invitation_response(invitation, group_name=group.name, invited_by_name=current_user.name)
 
 
 @router.get("/{group_id}/invitations", response_model=List[InvitationResponse])
@@ -601,7 +652,7 @@ async def list_invitations(
     )
     invitations = result.scalars().all()
 
-    return [InvitationResponse(**i.__dict__) for i in invitations]
+    return [build_invitation_response(i) for i in invitations]
 
 
 @router.post("/invitations/accept")
@@ -627,7 +678,7 @@ async def accept_invitation(
             detail="Invalid or expired invitation"
         )
 
-    if invitation.expires_at < datetime.utcnow():
+    if invitation.expires_at < datetime.now(timezone.utc):
         invitation.status = "expired"
         await db.commit()
         raise HTTPException(

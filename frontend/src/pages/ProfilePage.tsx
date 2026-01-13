@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useAuthStore } from '@/store/authStore';
 import { authService } from '@/services/auth';
@@ -19,6 +19,21 @@ export function ProfilePage() {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return window.localStorage.getItem('theme') === 'dark';
+  });
+
+  useEffect(() => {
+    const root = window.document.documentElement;
+    if (isDarkMode) {
+      root.classList.add('dark');
+      window.localStorage.setItem('theme', 'dark');
+    } else {
+      root.classList.remove('dark');
+      window.localStorage.setItem('theme', 'light');
+    }
+  }, [isDarkMode]);
 
   const updateMutation = useMutation({
     mutationFn: (data: { name?: string; phone?: string }) => authService.updateProfile(data),
@@ -82,6 +97,7 @@ export function ProfilePage() {
           <TabsTrigger value="profile">Profile</TabsTrigger>
           <TabsTrigger value="security">Security</TabsTrigger>
           <TabsTrigger value="notifications">Notifications</TabsTrigger>
+          <TabsTrigger value="preferences">Preferences</TabsTrigger>
         </TabsList>
 
         <TabsContent value="profile">
@@ -249,6 +265,29 @@ export function ProfilePage() {
                     />
                   </div>
                 ))}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="preferences">
+          <Card>
+            <CardHeader>
+              <CardTitle>Appearance</CardTitle>
+              <CardDescription>Customize how MoneyByte looks on your device</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-medium">Dark theme</p>
+                  <p className="text-sm text-muted-foreground">Reduce glare and switch to a darker palette</p>
+                </div>
+                <input
+                  type="checkbox"
+                  className="h-5 w-5 rounded border-gray-300"
+                  checked={isDarkMode}
+                  onChange={(event) => setIsDarkMode(event.target.checked)}
+                />
               </div>
             </CardContent>
           </Card>
