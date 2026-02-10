@@ -10,7 +10,6 @@ A full-stack expense splitting application built with FastAPI (backend) and Reac
 - **SQLAlchemy 2.0** - Async ORM
 - **JWT + bcrypt** - Authentication
 - **Google OAuth 2.0** - Social login
-- **SSE** - Real-time notifications
 
 ### Frontend
 - **React 18** - UI library
@@ -31,7 +30,6 @@ A full-stack expense splitting application built with FastAPI (backend) and Reac
 - Manual payment recording with approval workflow
 - Real-time balance calculation
 - Debt simplification algorithm
-- Notifications with SSE support
 - Comments and reactions on expenses
 - Activity feed
 - Dispute resolution with voting
