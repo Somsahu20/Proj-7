@@ -39,12 +39,14 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    
 )
 
 # Session middleware for OAuth
 app.add_middleware(
     SessionMiddleware,
     secret_key=settings.SECRET_KEY,
+    https_only=True
 )
 
 # Static files for uploads
